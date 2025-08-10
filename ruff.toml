@@ -1,0 +1,28 @@
+target-version = "py312"
+line-length = 100
+
+[lint]
+select = [
+  "E",    # pycodestyle – style errors
+  "F",    # pyflakes – undefined names, etc.
+  "I",    # isort – import sorting
+  "UP",   # pyupgrade – modern syntax (e.g., f-strings)
+  "B",    # bugbear – dangerous bugs
+  "S",    # bandit – security linting
+  "ARG",  # unused arguments
+  "C4",   # bad comprehensions
+  "RUF",  # Ruff-specific fixes
+]
+ignore = [
+  "ANN",  # annotation presence
+  "TCH",  # type checking
+]
+
+[lint.per-file-ignores]
+"tests/**/*.py" = ["S101"]
+"src/config/logging_config.py" = ["E501"]
+"alembic/**/*.py" = ["E501"]
+
+[format]
+quote-style = "double"
+docstring-code-format = true
