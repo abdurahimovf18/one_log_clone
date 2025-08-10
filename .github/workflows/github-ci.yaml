@@ -1,0 +1,102 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+
+  push-images:
+    needs: [lints, tests, type-checks]
+    name: Push images
+    runs-on: ubuntu-latest
+    steps:
+       - name: Echo Implementation
+         run: echo Pushing docker container should be implemented using Harbor or other solutions.
+
+  type-checks:
+    name: Run Type Checkers
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.12.4"]
+        uv-version: ["0.7.11"]
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          version: ${{ matrix.uv-version }}
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install Dev Dependencies
+        run: uv sync --dev
+
+      - name: Run Tests
+        run: make type-check
+
+  lints:
+    name: Run Linters
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.12.4"]
+        uv-version: ["0.7.11"]
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          version: ${{ matrix.uv-version }}
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install Dev Dependencies
+        run: uv sync --dev
+
+      - name: Run Tests
+        run: make lint
+
+  tests:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.12.4"]
+        uv-version: ["0.7.11"]
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          version: ${{ matrix.uv-version }}
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install Dev Dependencies
+        run: uv sync --dev
+
+      - name: Run Tests
+        run: make test-quiet
