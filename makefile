@@ -1,4 +1,4 @@
-.PHONY: test test-q type-check lint lint-fix check-all
+.PHONY: test test-q type-check lint lint-fix check-all bot-start
 
 test: 
 	uv run pytest
@@ -16,3 +16,6 @@ lint-fix:
 	uv run ruff check . --fix
 
 check-all: test lint
+
+bot-start:
+	uv run python -m src.bot.main

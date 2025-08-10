@@ -11,8 +11,10 @@ dependencies = [
     "psycopg[async,binary]>=3.2.9",
     "pydantic-settings>=2.10.1",
     "pyright>=1.1.403",
+    "python-json-logger>=3.3.0",
     "redis>=6.4.0",
     "sqlalchemy>=2.0.42",
+    "uvloop>=0.21.0",
 ]
 
 [dependency-groups]
