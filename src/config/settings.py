@@ -51,7 +51,7 @@ DATABASE_URL = (
 if DEBUG:
     LOG_LEVEL: str = LogLevel.DEBUG.value
 else:
-    LOG_LEVEL: str = env.LOG_LEVEL.value  # type: ignore  # noqa
+    LOG_LEVEL: str = env.LOG_LEVEL.value  # type: ignore
 
 
 LOGGING_CONFIG: dict[str, object] = {
