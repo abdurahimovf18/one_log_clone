@@ -7,7 +7,7 @@ from src.config.settings import DATABASE_URL
 
 engine = create_async_engine(
     url=DATABASE_URL,
-    pool_class=NullPool,  # PgBouncer manages pools
+    poolclass=NullPool,  # PgBouncer manages pools
 )
 
 session_factory: async_sessionmaker[AsyncSession] = async_sessionmaker(

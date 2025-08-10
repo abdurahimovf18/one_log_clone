@@ -1,4 +1,5 @@
 import sys
+from datetime import UTC, timezone
 from pathlib import Path
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -6,9 +7,9 @@ from pythonjsonlogger import jsonlogger
 
 from .enums import LogLevel
 
-ROOT = Path(__file__).resolve().parent.parent.parent
+ROOT: Path = Path(__file__).resolve().parent.parent.parent
 
-LOG_DIR = ROOT / "resources" / "logs"
+LOG_DIR: Path = ROOT / "resources" / "logs"
 LOG_DIR.mkdir(exist_ok=True, parents=True)
 
 
@@ -40,10 +41,11 @@ class Env(BaseSettings):
     
 env = Env()  # type: ignore
 
-DEBUG = env.DEBUG
+DEBUG: bool = env.DEBUG
+TIMEZONE: timezone = UTC
 
 # sqlalchemy url: database+driver://{user}:{password}@{host}:{port}/{db_name} 
-DATABASE_URL = (
+DATABASE_URL: str = (
     f"postgresql+psycopg://{env.DATABASE_USER}:{env.DATABASE_PASSWORD}"
     f"@{env.DATABASE_HOST}:{env.DATABASE_PORT}/{env.DATABASE_NAME}"
 )
