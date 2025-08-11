@@ -1,5 +1,7 @@
-from src.config.enums import LogLevel
+from src.config.enums import LogLevel, UserLanguage, UserLanguages
 
 __all__ = [
-    "LogLevel"
+    "LogLevel",
+    "UserLanguage",
+    "UserLanguages",
 ]

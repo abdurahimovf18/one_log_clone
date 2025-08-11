@@ -7,7 +7,8 @@ import sqlalchemy as sa
 from sqlalchemy import types as sa_typ
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from src.config.settings import TIMEZONE
+from src.config.settings import DEFAULT_LANGUAGE, TIMEZONE
+from src.core.domain_schema.settings import UserLanguages
 from src.infrastructure.database import Base
 
 id_ = Annotated[
@@ -48,20 +49,20 @@ class User(Base):
     created_at: Mapped[created_at]
     updated_at: Mapped[updated_at]
 
-    tg_auth: Mapped[list["UserTgAuth"]] = relationship(
-        "UserTgAuth", back_populates="user", uselist=True
+    tg_auth: Mapped[list["UserAuth"]] = relationship(
+        "UserAuth", back_populates="user", uselist=True
     )
 
 
-class UserTgAuth(Base):
-    __tablename__ = "user_tg_auth"
+class UserAuth(Base):
+    __tablename__ = "user_auth"
 
     user_id: Mapped[uuid.UUID] = mapped_column(
         sa_typ.UUID(as_uuid=True), 
         sa.ForeignKey("users.id", ondelete="CASCADE"),
         primary_key=True,
     )
-    chat_id: Mapped[int] = mapped_column(sa_typ.Integer, primary_key=True)
+    chat_id: Mapped[int] = mapped_column(sa_typ.BigInteger, primary_key=True)
 
     user: Mapped["User"] = relationship("User", back_populates="tg_auth")
 
@@ -69,8 +70,10 @@ class UserTgAuth(Base):
 class UserLanguage(Base):
     __tablename__ = "user_languages"
 
-    chat_id: Mapped[int] = mapped_column(sa_typ.Integer, primary_key=True)  # for private users
-    language: Mapped[str]
+    chat_id: Mapped[int] = mapped_column(sa_typ.BigInteger, primary_key=True)  # for private users
+    language: Mapped[UserLanguages] = mapped_column(
+        sa_typ.Enum(UserLanguages), server_default=sa.text(f"{DEFAULT_LANGUAGE.value}")
+    )
 
     created_at: Mapped[created_at]
     updated_at: Mapped[updated_at]

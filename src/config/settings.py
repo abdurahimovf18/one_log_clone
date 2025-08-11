@@ -5,7 +5,7 @@ from pathlib import Path
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pythonjsonlogger import jsonlogger
 
-from .enums import LogLevel
+from .enums import LogLevel, UserLanguage, UserLanguages
 
 ROOT: Path = Path(__file__).resolve().parent.parent.parent
 
@@ -105,3 +105,14 @@ LOGGING_CONFIG: dict[str, object] = {
         },
     },
 }
+
+# Supported languages for the application.
+# To add new languages, update the database schema and manage translations.
+# See the Makefile for commands to handle translation updates with pybabel.
+LANGUAGES: tuple[UserLanguage, ...] = (
+    UserLanguage(language=UserLanguages.EN, display_text="🇺🇸 EN"),
+    UserLanguage(language=UserLanguages.UZ, display_text="🇺🇿 UZ"),
+    UserLanguage(language=UserLanguages.RU, display_text="🇷🇺 RU"),
+)
+
+DEFAULT_LANGUAGE: UserLanguages = UserLanguages.EN
