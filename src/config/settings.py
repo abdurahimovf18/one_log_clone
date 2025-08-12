@@ -12,6 +12,8 @@ ROOT: Path = Path(__file__).resolve().parent.parent.parent
 LOG_DIR: Path = ROOT / "resources" / "logs"
 LOG_DIR.mkdir(exist_ok=True, parents=True)
 
+LOCALE_DIR: Path = ROOT / "locales"
+LOCALE_DIR.mkdir(exist_ok=True, parents=True)
 
 class Env(BaseSettings):
     #  === Application Settings ===
@@ -89,7 +91,7 @@ LOGGING_CONFIG: dict[str, object] = {
     },
     "root": {  # Default logger
         "handlers": ["console", "json_file"],
-        "level": "DEBUG",
+        "level": LOG_LEVEL,
     },
     "loggers": {
         # Example: custom logger with separate level

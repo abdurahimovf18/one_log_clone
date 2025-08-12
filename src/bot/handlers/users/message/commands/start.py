@@ -1,7 +1,8 @@
 from aiogram import Router
 from aiogram.filters.command import CommandStart
-from aiogram.fsm.context import FSMContext
-from aiogram.types import Message
+
+# from aiogram.fsm.context import FSMContext
+# from aiogram.types import Message
 from dishka.integrations.aiogram import FromDishka
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -23,8 +24,8 @@ async def start_authenticated(
 
 @router.message(CommandStart())
 async def start_not_authenticated(
-        msg: Message, 
-        state: FSMContext, 
+        # msg: Message, 
+        # state: FSMContext, 
         session: FromDishka[AsyncSession]
     ) -> None:
     print(2)

@@ -2,10 +2,8 @@ from typing import cast
 
 from aiogram.filters import Filter
 from aiogram.types import Update
+from dishka.integrations.aiogram import FromDishka, inject
 from sqlalchemy.ext.asyncio import AsyncSession
-
-from dishka.integrations.aiogram import FromDishka
-from dishka.integrations.aiogram import inject
 
 from src.core.queries import user_auth
 
