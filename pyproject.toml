@@ -8,6 +8,7 @@ dependencies = [
     "aiogram[i18n]>=3.21.0",
     "alembic>=1.16.4",
     "alembic-postgresql-enum>=1.8.0",
+    "argon2-cffi>=25.1.0",
     "dishka>=1.6.0",
     "faststream[rabbit]>=0.5.48",
     "psycopg[async,binary]>=3.2.9",
@@ -22,5 +23,6 @@ dependencies = [
 [dependency-groups]
 dev = [
     "pytest>=8.4.1",
+    "pytest-asyncio>=1.1.0",
     "ruff>=0.12.8",
 ]

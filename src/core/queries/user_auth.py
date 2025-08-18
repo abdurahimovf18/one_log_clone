@@ -2,15 +2,16 @@ import sqlalchemy as sa
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.core.data_transfer_objects.paramters.queries import user_auth as p
+from src.core.data_transfer_objects.responses.queries import user_auth as r
 from src.models import UserAuth
-
-# from src.core.data_transfer_objects.responses.queries import user_auth as r
-
 
 model = UserAuth
 
 
-async def exists(data: p.ExistsDTO, session: AsyncSession) -> bool:
+async def exists(
+    data: p.ExistsDTO, 
+    session: AsyncSession
+    ) -> bool:
     """
     Checks if a UserAuth matching the given criteria exists in the database.
     Returns True if exists, False otherwise.
@@ -27,3 +28,14 @@ async def exists(data: p.ExistsDTO, session: AsyncSession) -> bool:
     query = sa.select(exists_condition)
     result = await session.execute(query)
     return result.scalar_one()
+
+
+async def create(
+    data: p.CreateDTO,
+    *,
+    session: AsyncSession,
+    ) -> r.CreateDTO:
+    model_object = model(**data.model_dump())
+    session.add(model_object)
+    await session.flush([model_object])
+    return r.CreateDTO.model_validate(model_object)

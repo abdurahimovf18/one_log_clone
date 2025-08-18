@@ -3,7 +3,7 @@ from datetime import UTC, timezone
 from pathlib import Path
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from pythonjsonlogger import jsonlogger
+from pythonjsonlogger import json
 
 from .enums import LogLevel, UserLanguage, UserLanguages
 
@@ -19,6 +19,13 @@ class Env(BaseSettings):
     #  === Application Settings ===
     DEBUG: bool
     LOG_LEVEL: LogLevel
+
+    # === Security Settings ===
+    PASSWORD_HASH_TIME_COST: int
+    PASSWORD_HASH_MEMORY_COST: int
+    PASSWORD_HASH_PARALLELISM: int
+    PASSWORD_HASH_LENGTH: int
+    PASSWORD_HASH_SALT_LENGTH: int
 
     #  === Bot Settings ===
     BOT_TOKEN: str
@@ -67,7 +74,7 @@ LOGGING_CONFIG: dict[str, object] = {
             "datefmt": "%Y-%m-%dT%H:%M:%SZ",  # UTC, ISO 8601
         },
         "json": {  # JSON structured logs
-            "()": jsonlogger.JsonFormatter,  # type: ignore
+            "()": json.JsonFormatter,  # type: ignore
             "fmt": "%(asctime)s %(levelname)s %(name)s %(message)s %(filename)s:%(lineno)d",
             "datefmt": "%Y-%m-%dT%H:%M:%SZ",
         },

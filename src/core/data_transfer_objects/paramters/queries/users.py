@@ -14,3 +14,8 @@ class ExistsDTO(BaseDTO):
     username: User.username | None = Field(default=None)
     created_at: User.created_at | None = Field(default=None)
     updated_at: User.updated_at | None = Field(default=None)
+
+
+class GetPasswordByUsername(BaseDTO):
+    username: User.username
+    

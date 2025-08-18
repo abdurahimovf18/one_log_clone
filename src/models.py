@@ -62,9 +62,13 @@ class UserAuth(Base):
         sa.ForeignKey("users.id", ondelete="CASCADE"),
         primary_key=True,
     )
-    chat_id: Mapped[int] = mapped_column(sa_typ.BigInteger, primary_key=True)
+    chat_id: Mapped[int] = mapped_column(sa_typ.BigInteger, nullable=False)
 
     user: Mapped["User"] = relationship("User", back_populates="tg_auth")
+
+    __table_args__ = (
+        sa.Index("user_auth_chat_id_inx", "chat_id"),
+    )
 
 
 class UserLanguage(Base):

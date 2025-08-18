@@ -10,3 +10,8 @@ class CreateDTO(BaseDTO):
 
     created_at: User.created_at
     updated_at: User.updated_at
+
+
+class GetPasswordByUsername(BaseDTO):
+    id: User.id
+    password: User.password

@@ -14,4 +14,3 @@ class User:
     type created_at = CreatedAt
     type updated_at = UpdatedAt
 
-    type tg_auth = Annotated[list["UserTgAuth"], Field()]  # type: ignore  # noqa: F821
