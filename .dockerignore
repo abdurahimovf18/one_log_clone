@@ -1,0 +1,13 @@
+.env
+README.md
+/docs
+.venv
+.pytest_cache
+.ruff_cache
+.github
+tests
+.gitignore
+pytest.ini
+ruff.toml
+tree.txt
+uv.lock

@@ -1,0 +1,113 @@
+# Base Docker Compose file (base.yaml)
+#
+# Purpose:
+#   - Defines all core services (bot, redis, database, pgbouncer).
+#   - Provides sane defaults for healthchecks, networks, and environment.
+#   - Intended as the foundation for all environments (dev, prod, ci).
+#
+# Usage:
+#   docker compose -f resources/docker/compose/base.yaml up
+#   (Usually extended with: -f dev.yaml, -f prod.yaml, etc.)
+#
+# Extension Guidelines:
+#   - Do NOT directly modify this file unless you need to change global defaults.
+#   - Add volumes, entrypoints, or environment-specific overrides in your
+#     dev.yaml / prod.yaml files instead.
+#   - Recommended extension method: `docker compose -f base.yaml -f dev.yaml up`
+#
+# Notes:
+#   - All services share the `application` bridge network for inter-service DNS.
+#   - Healthchecks ensure services are considered "healthy" before bot starts.
+#   - Pgbouncer is configured as a connection pooler in front of Postgres.
+
+x-application-environment: &application-environment
+  DEBUG: ${DEBUG}
+  LOG_LEVEL: ${LOG_LEVEL}
+  BOT_TOKEN: ${BOT_TOKEN}
+  DATABASE_USER: ${DATABASE_USER}
+  DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+  DATABASE_HOST: ${DATABASE_HOST}
+  DATABASE_PORT: ${DATABASE_PORT}
+  DATABASE_NAME: ${DATABASE_NAME}
+  REDIS_HOST: ${REDIS_HOST}
+  REDIS_PORT: ${REDIS_PORT}
+  REDIS_PASSWORD: ${REDIS_PASSWORD}
+  REDIS_DB: ${REDIS_DB}
+
+networks:
+  application:
+    driver: bridge
+
+services:
+  # -------------------------
+  # Bot service
+  # -------------------------
+  bot:
+    build:
+      dockerfile: ../services/bot/Dockerfile
+    environment:
+      <<: *application-environment
+    networks:
+      - application
+    depends_on:
+      - redis
+      - database
+      - pgbouncer
+
+  # -------------------------
+  # Redis (cache + broker)
+  # -------------------------
+  redis:
+    image: redis:8.2.1
+    command: redis-server --requirepass ${REDIS_PASSWORD}
+    networks:
+      - application
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 7s
+      timeout: 2s
+      retries: 3
+
+  # -------------------------
+  # Postgres (primary DB)
+  # -------------------------
+  database:
+    image: postgres:17.6
+    networks:
+      - application
+    environment:
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${DATABASE_USER}", "-d", "${DATABASE_NAME}"]
+      interval: 7s
+      timeout: 5s
+      retries: 2
+    
+  # -------------------------
+  # PgBouncer (DB connection pooler)
+  # -------------------------
+  pgbouncer:
+    image: "bitnami/pgbouncer:1.24.1-debian-12-r10"
+    restart: always
+    environment:
+      POSTGRESQL_HOST: database
+      POSTGRESQL_USERNAME: ${DATABASE_USER}
+      POSTGRESQL_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRESQL_PORT: 5432
+      PGBOUNCER_DATABASE: ${POSTGRES_DB}
+      PGBOUNCER_AUTH_TYPE: "md5"
+      PGBOUNCER_POOL_MODE: "transaction"
+      PGBOUNCER_MAX_CLIENT_CONN: 2000
+      PGBOUNCER_MAX_DB_CONNECTIONS: 50
+      PGBOUNCER_IGNORE_STARTUP_PARAMETERS: "extra_float_digits"
+    depends_on:
+      - database
+    healthcheck:
+      test: ["CMD", "pg_isready", "-h", "database", "-p", "6432", "-U", "${DATABASE_USER}"]
+      interval: 7s
+      timeout: 5s
+      retries: 2
+    networks:
+      - application

@@ -1,14 +1,14 @@
 from argon2 import PasswordHasher
 from argon2.exceptions import InvalidHash, VerificationError, VerifyMismatchError
 
-from src.config.settings import env
+from src.config import settings
 
 ph = PasswordHasher(
-    time_cost=env.PASSWORD_HASH_TIME_COST,
-    memory_cost=env.PASSWORD_HASH_MEMORY_COST,
-    parallelism=env.PASSWORD_HASH_PARALLELISM,
-    hash_len=env.PASSWORD_HASH_LENGTH,
-    salt_len=env.PASSWORD_HASH_SALT_LENGTH,
+    time_cost=settings.PASSWORD_HASH_TIME_COST,
+    memory_cost=settings.PASSWORD_HASH_MEMORY_COST,
+    parallelism=settings.PASSWORD_HASH_PARALLELISM,
+    hash_len=settings.PASSWORD_HASH_LENGTH,
+    salt_len=settings.PASSWORD_HASH_SALT_LENGTH,
 )
 
 

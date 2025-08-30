@@ -40,8 +40,39 @@ lint-fix:
 check-all: test lint
 
 
+## -----------------------------------------------------------------------
+## Docker/Docker-Compose executed commands
+## -----------------------------------------------------------------------
+
+# Those commands are executed inside a running docker container and
+# this affects whole code because of the volumes.
+
 # ------------------------------------------------------------------------
-# Bot commands
+# docker-compose
 # ------------------------------------------------------------------------
-bot-start:
-	uv run python -m src.bot.main
+
+migrate-stamp:
+	docker compose exec bot uv run alembic stamp head
+
+migrate-revision:
+	@read -p "Enter migration name: " migration_name; \
+	echo "Migration is being sent to alembic as $$migration_name"; \
+	docker compose exec bot uv run alembic revision --autogenerate -m "$$migration_name"
+
+database-update:
+	docker compose exec bot uv run alembic upgrade head
+
+down:
+	docker compose down
+
+build:
+	docker compose up -d --build --remove-orphans
+
+up:
+	docker compose up -d 
+
+show-logs:
+	docker compose logs -f
+
+rebuild: down build
+

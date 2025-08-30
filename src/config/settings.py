@@ -20,13 +20,6 @@ class Env(BaseSettings):
     DEBUG: bool
     LOG_LEVEL: LogLevel
 
-    # === Security Settings ===
-    PASSWORD_HASH_TIME_COST: int
-    PASSWORD_HASH_MEMORY_COST: int
-    PASSWORD_HASH_PARALLELISM: int
-    PASSWORD_HASH_LENGTH: int
-    PASSWORD_HASH_SALT_LENGTH: int
-
     #  === Bot Settings ===
     BOT_TOKEN: str
 
@@ -125,3 +118,10 @@ LANGUAGES: tuple[UserLanguage, ...] = (
 )
 
 DEFAULT_LANGUAGE: UserLanguages = UserLanguages.EN
+
+#  === Security Settings ===
+PASSWORD_HASH_TIME_COST = 3            # Iterations or cost factor
+PASSWORD_HASH_MEMORY_COST = 65536      # Memory in KiB (Argon2 / scrypt)
+PASSWORD_HASH_PARALLELISM = 2          # Threads / lanes
+PASSWORD_HASH_LENGTH = 32              # Output length in bytes
+PASSWORD_HASH_SALT_LENGTH = 16         # Salt length in bytes

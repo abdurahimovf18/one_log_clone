@@ -1,0 +1,45 @@
+# Development Docker Compose file (dev.yaml)
+#
+# Purpose:
+#   - Extends base.yaml with developer-friendly settings.
+#   - Mounts source code, configs, and logs into containers for live iteration.
+#   - Preserves Postgres data between restarts via named volume `database_data`.
+#
+# Usage:
+#   docker compose -f resources/docker/compose/base.yaml -f resources/docker/compose/dev.yaml up
+#
+# Extension Guidelines:
+#   - Use this file only for local development.
+#   - Do NOT copy these volume mounts into production — they are meant for
+#     hot-reloading, debugging, and keeping developer tools in sync.
+#   - Add or remove mounts here as your workflow requires (e.g. new configs, tools).
+#
+# Notes:
+#   - Bot service has source mounted (`./src:/app/src`) for live reloading.
+#   - Linting/test configs (ruff, pytest, etc.) are mounted read-only for consistency.
+#   - Database uses a named Docker volume (`database_data`) to persist data
+#     across container restarts, so you don’t lose state during development.
+#   - Logs are written both inside container and mounted to host (`./resources/logs`)
+#     for easier inspection during debugging.
+
+
+x-development-volumes: &development-volumes:
+  - ./alembic:/app/alembic
+  - ./locales:/app/locales
+  - ./resources/logs:/app/resources/logs
+  - ./src:/app/src
+  - ./tests:/app/tests
+  - ./ruff.toml:/app/ruff.toml:ro
+  - ./uv.lock:/app/uv.lock:ro
+  - ./pytest.ini:/app/pytest.ini:ro
+
+volumes:
+  database_data: null
+
+services:
+  bot:
+    volumes: *development-volumes
+
+  database:
+    volumes:
+      - database_data:/var/lib/postgresql/data

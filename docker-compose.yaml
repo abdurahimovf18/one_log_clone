@@ -1,0 +1,23 @@
+# Root Docker Compose file (docker-compose.yaml)
+#
+# Why this file exists:
+#   - Provides a top-level `docker-compose.yaml` so developers can run
+#       `docker compose up -d`
+#     without needing to manually include `base.yaml`.
+#   - It simply *wraps* `resources/docker/compose/base.yaml`.
+#
+# How to use it:
+#   - Run `docker compose up -d` to start all default services (from base.yaml).
+#   - For environment-specific configs (dev/prod/ci), extend with additional files:
+#       docker compose -f docker-compose.yaml -f dev.yaml up -d
+#
+# Guidelines:
+#   - Do NOT add services directly here — this file should stay minimal.
+#   - Make changes in `base.yaml` or dedicated environment files instead.
+#   - Keep this file in sync with `base.yaml` structure if paths change.
+#
+# Think of this file as a shortcut:
+#   - It’s here only for convenience, so the "default" command works smoothly.
+
+include:
+  - ./resources/docker/compose/base.yaml
