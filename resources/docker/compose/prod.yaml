@@ -23,6 +23,11 @@
 #     for easier inspection during debugging.
 
 
+
+
+#### TODO: override this docker compose file.
+#### -----------------------------------------------
+
 x-application-volumes: &application-volumes:
   - ./alembic:/app/alembic
   - ./locales:/app/locales
@@ -42,12 +47,6 @@ volumes:
 services:
   exec:
     build:
-      dockerfile: ../services/exec/Dockerfile.dev
+      dockerfile: ../services/exec/Dockerfile.prod
+
     volumes: *development-volumes
-
-  bot:
-    volumes: *application-volumes
-
-  database:
-    volumes:
-      - database_data:/var/lib/postgresql/data

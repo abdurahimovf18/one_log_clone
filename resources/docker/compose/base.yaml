@@ -20,6 +20,9 @@
 #   - Healthchecks ensure services are considered "healthy" before bot starts.
 #   - Pgbouncer is configured as a connection pooler in front of Postgres.
 
+x-constants:
+  PROJECT_ROOT: &PROJECT_ROOT "./../../../"
+
 x-application-environment: &application-environment
   DEBUG: ${DEBUG}
   LOG_LEVEL: ${LOG_LEVEL}
@@ -39,12 +42,29 @@ networks:
     driver: bridge
 
 services:
+  # ----------------------
+  # Exec Service
+  # ----------------------
+  exec:
+    build:
+      dockerfile: ./resources/docker/services/exec/Dockerfile.dev
+      context: *PROJECT_ROOT
+    environment:
+      <<: *application-environment
+    networks:
+      - application
+    depends_on:
+      - redis
+      - database
+      - pgbouncer
+
   # -------------------------
   # Bot service
   # -------------------------
   bot:
     build:
-      dockerfile: ../services/bot/Dockerfile
+      dockerfile: ./resources/docker/services/application/Dockerfile.prod
+      context: *PROJECT_ROOT
     environment:
       <<: *application-environment
     networks:
@@ -72,7 +92,7 @@ services:
   # Postgres (primary DB)
   # -------------------------
   database:
-    image: postgres:17.6
+    image: postgres:17
     networks:
       - application
     environment:

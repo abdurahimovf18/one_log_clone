@@ -1,0 +1,19 @@
+#!/bin/sh
+FROM python:3.12-slim
+
+# Set working directory
+WORKDIR /app
+
+# Copy project files related to dependencies first for layer caching
+COPY pyproject.toml .
+
+# Install uv globally
+RUN pip install --no-cache-dir uv
+
+# Create virtual environment inside the image
+RUN uv venv
+RUN uv lock
+RUN uv sync --all-groups
+
+# Copy the rest of the application code
+COPY . .
