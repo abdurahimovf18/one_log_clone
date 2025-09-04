@@ -17,6 +17,7 @@ jobs:
   type-checks:
     name: Run Type Checkers
     runs-on: ubuntu-latest
+    environment: CI
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -31,19 +32,6 @@ jobs:
 
       - name: Up Docker Containers
         run: make ci-up
-        env:
-          DEBUG: ${{ secrets.DEBUG }}
-          LOG_LEVEL: ${{ secrets.LOG_LEVEL }}
-          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
-          DATABASE_USER: ${{ secrets.DATABASE_USER }}
-          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-          DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
-          DATABASE_PORT: ${{ secrets.DATABASE_PORT }}
-          DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
-          REDIS_HOST: ${{ secrets.REDIS_HOST }}
-          REDIS_PORT: ${{ secrets.REDIS_PORT }}
-          REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
-          REDIS_DB: ${{ secrets.REDIS_DB }}
 
       - name: Run Migrations
         run: make ci-migrate
