@@ -32,21 +32,21 @@ jobs:
       - name: Up Docker Containers
         runs: make ci-up
         env:
-          DEBUG: ${DEBUG}
-          LOG_LEVEL: ${LOG_LEVEL}
-          BOT_TOKEN: ${BOT_TOKEN}
-          DATABASE_USER: ${DATABASE_USER}
-          DATABASE_PASSWORD: ${DATABASE_PASSWORD}
-          DATABASE_HOST: ${DATABASE_HOST}
-          DATABASE_PORT: ${DATABASE_PORT}
-          DATABASE_NAME: ${DATABASE_NAME}
-          REDIS_HOST: ${REDIS_HOST}
-          REDIS_PORT: ${REDIS_PORT}
-          REDIS_PASSWORD: ${REDIS_PASSWORD}
-          REDIS_DB: ${REDIS_DB}
+          DEBUG: ${{ secrets.DEBUG }}
+          LOG_LEVEL: ${{ secrets.LOG_LEVEL }}
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          DATABASE_USER: ${{ secrets.DATABASE_USER }}
+          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+          DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
+          DATABASE_PORT: ${{ secrets.DATABASE_PORT }}
+          DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
+          REDIS_HOST: ${{ secrets.REDIS_HOST }}
+          REDIS_PORT: ${{ secrets.REDIS_PORT }}
+          REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
+          REDIS_DB: ${{ secrets.REDIS_DB }}
 
       - name: Run Tests
-        runs: make ci-test-q
+        runs: make ci-test
 
   # lints:
   #   name: Run Linters
