@@ -27,10 +27,10 @@ jobs:
           version: "latest"
       
       - name: Build Docker Images
-        runs: make ci-build
+        run: make ci-build
 
       - name: Up Docker Containers
-        runs: make ci-up
+        run: make ci-up
         env:
           DEBUG: ${{ secrets.DEBUG }}
           LOG_LEVEL: ${{ secrets.LOG_LEVEL }}
@@ -46,7 +46,7 @@ jobs:
           REDIS_DB: ${{ secrets.REDIS_DB }}
 
       - name: Run Tests
-        runs: make ci-test
+        run: make ci-test
 
   # lints:
   #   name: Run Linters
