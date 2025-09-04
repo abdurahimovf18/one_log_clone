@@ -1,0 +1,26 @@
+
+x-application-volumes: &application-volumes
+  - ./locales:/app/locales
+  - ./resources/logs:/app/resources/logs
+  - ./src:/app/src
+
+x-ci-volumes: &ci-volumes
+  - ./tests:/app/tests
+  - ./ruff.toml:/app/ruff.toml:ro
+  - ./uv.lock:/app/uv.lock:ro
+  - ./pytest.ini:/app/pytest.ini:ro
+  - ./alembic:/app/alembic
+
+  # application-volumes are copied here:
+  - ./locales:/app/locales
+  - ./resources/logs:/app/resources/logs
+  - ./src:/app/src
+
+services:
+  exec-service:
+    build:
+      dockerfile: ./resources/docker/services/exec/Dockerfile.dev
+    volumes: *ci-volumes
+
+  bot:
+    volumes: *application-volumes

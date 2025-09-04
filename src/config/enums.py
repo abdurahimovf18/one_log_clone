@@ -10,7 +10,7 @@ class LogLevel(str, Enum):
     CRITICAL = "CRITICAL"
 
 
-class UserLanguages(str, Enum):
+class UserLanguages(Enum):
     UZ = "UZ"
     RU = "RU"
     EN = "EN"

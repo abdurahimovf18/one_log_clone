@@ -1,13 +1,29 @@
+# Env & configs
 .env
-README.md
-/docs
+.env.example
+
+# Dev & tooling
 .venv
 .pytest_cache
 .ruff_cache
+.mypy_cache
+.git
 .github
-tests
-.gitignore
-pytest.ini
-ruff.toml
+/tests
+/docs
+*.md
+Makefile
 tree.txt
-uv.lock
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Docker-related
+.dockerignore
+
+# Project-specific
+/resources/*
+!/resources/docker/services
+/alembic

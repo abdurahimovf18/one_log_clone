@@ -76,7 +76,7 @@ class UserLanguage(Base):
 
     chat_id: Mapped[int] = mapped_column(sa_typ.BigInteger, primary_key=True)  # for private users
     language: Mapped[UserLanguages] = mapped_column(
-        sa_typ.Enum(UserLanguages), server_default=sa.text(f"{DEFAULT_LANGUAGE.value}")
+        sa_typ.Enum(UserLanguages), default=DEFAULT_LANGUAGE
     )
 
     created_at: Mapped[created_at]

@@ -22,27 +22,30 @@
 #   - Logs are written both inside container and mounted to host (`./resources/logs`)
 #     for easier inspection during debugging.
 
-
-x-application-volumes: &application-volumes:
-  - ./alembic:/app/alembic
+x-application-volumes: &application-volumes
   - ./locales:/app/locales
   - ./resources/logs:/app/resources/logs
   - ./src:/app/src
 
-x-development-volumes: &development-volumes:
+x-development-volumes: &development-volumes
   - ./tests:/app/tests
   - ./ruff.toml:/app/ruff.toml:ro
   - ./uv.lock:/app/uv.lock:ro
   - ./pytest.ini:/app/pytest.ini:ro
-  - << *application-volumes
+  - ./alembic:/app/alembic
+
+  # application-volumes are copied here:
+  - ./locales:/app/locales
+  - ./resources/logs:/app/resources/logs
+  - ./src:/app/src
 
 volumes:
   database_data: null
 
 services:
-  exec:
+  exec-service:
     build:
-      dockerfile: ../services/exec/Dockerfile.dev
+      dockerfile: ./resources/docker/services/exec/Dockerfile.dev
     volumes: *development-volumes
 
   bot:

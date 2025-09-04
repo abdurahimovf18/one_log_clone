@@ -1,78 +1,161 @@
+# # # Setting up Makefile behavior
+.SILENT:
 
-# ------------------------------------------------------------------------
-# I18N commands
-# ------------------------------------------------------------------------
-i18n-extract:                  # Extract messages to .pot
-	pybabel extract --input-dirs=src/ -o locales/messages.pot
+### Constants
+### ------------------------------------------------------------------------
+EXEC_SERVICE = exec-service
 
-i18n-extract-extended:         # Extract with custom keywords
-	pybabel extract -k _:1,1t -k _:1,2 -k __ --input-dirs=src/ -o locales/messages.pot
 
-i18n-compile:                  # Compile .po files to .mo
-	pybabel compile -d locales -D messages
+### Development Commands
+### ------------------------------------------------------------------------
 
-i18n-add-language:                 # Add a new language
-	@read -p "Enter language code (e.g., EN, FR, ES): " lang; \
+# docker compose file which will be working with is: 
+#
+# >>> docker compose -f ./docker-compose.yaml -f ./resources/docker/compose/dev.yaml
+
+# === Constants ===
+DEV_COMPOSE = docker compose -f ./docker-compose.yaml -f ./resources/docker/compose/dev.yaml
+DEV_EXEC = $(DEV_COMPOSE) exec $(EXEC_SERVICE)
+
+# === Docker Compose === 
+dev-up: 
+	$(DEV_COMPOSE) up -d
+
+dev-down: 
+	$(DEV_COMPOSE) down
+
+dev-restart: dev-down dev-up
+
+dev-build: 
+	$(DEV_COMPOSE) build
+
+dev-rebuild: 
+	$(MAKE) dev-down 
+	$(MAKE) dev-build 
+	$(MAKE) dev-up
+
+# === Shells ===
+dev-service-shell:
+	read -p "<[dev] Bash> Enter the service to open the bash: " service;\
+	$(DEV_COMPOSE) exec $$service bash
+
+dev-c:
+	read -p "<[dev] $(EXEC_SERVICE) /> " command; \
+	$(DEV_EXEC) $$command
+
+dev-shell:
+	$(DEV_EXEC) bash
+
+dev-database-shell:
+	-bash -c 'trap "echo; echo <[dev] database /> Shell interrupted; exit 0" INT'; \
+	read -p "<[dev] database /> USER: " user; \
+	read -p "<[dev] database /> DATABASE: " database; \
+	$(DEV_COMPOSE) exec database psql -U $$user -d $$database
+
+# === Logs ===
+dev-show-logs:
+	$(DEV_COMPOSE) logs -f
+
+# === Localization/I18n ===
+dev-i18n-extract:
+	$(DEV_EXEC) uv run pybabel extract --input-dirs=src/ -o locales/messages.pot
+
+dev-i18n-extract-ext:
+	$(DEV_EXEC) uv run pybabel extract -k _:1,1t -k _:1,2 -k __ --input-dirs=src/ -o locales/messages.pot
+
+dev-i18n-compile:
+	$(DEV_EXEC) uv run pybabel compile -d locales -D messages
+
+dev-i18n-init-lang:
+	read -p "Enter language code (e.g., EN, FR, ES, etc.): " lang; \
 	lang_upper=$$(echo $$lang | tr '[:lower:]' '[:upper:]'); \
-	pybabel init -i locales/messages.pot -d locales -D messages -l $$lang_upper
+	$(DEV_EXEC) uv run pybabel init -i locales/messages.pot -d locales -D messages -l $$lang_upper
 
-i18n-update:                   # Update existing translations from .pot
-	pybabel update -d locales -D messages -i locales/messages.pot
+dev-i18n-update:                   # Update existing translations from .pot
+	$(DEV_EXEC) uv run pybabel update -d locales -D messages -i locales/messages.pot
 
-# ------------------------------------------------------------------------
-# test/lint/type-checker commands
-# ------------------------------------------------------------------------
-test: 
-	uv run pytest
+# === Tests ===
+dev-test:
+	$(DEV_EXEC) uv run pytest
 
-test-quiet: 
-	uv run pytest -q
+dev-test-q:
+	$(DEV_EXEC) uv run pytest -q
 
-type-check: 
-	uv run pyright
-
-lint: 
-	uv run ruff check .
-
-lint-fix: 
-	uv run ruff check . --fix
-
-check-all: test lint
+dev-test-:
 
 
-## -----------------------------------------------------------------------
-## Docker/Docker-Compose executed commands
-## -----------------------------------------------------------------------
+# === linters ===
+dev-lint:
+	$(DEV_EXEC) uv run ruff check .
 
-# Those commands are executed inside a running docker container and
-# this affects whole code because of the volumes.
+dev-lint-fix:
+	$(DEV_EXEC) uv run ruff check . --fix
 
-# ------------------------------------------------------------------------
-# docker-compose
-# ------------------------------------------------------------------------
+# === type checks ===
+dev-type-check:
+	$(DEV_EXEC) uv run pyright
 
-migrate-stamp:
-	docker compose exec bot uv run alembic stamp head
+# === linters/tests combination ===
+dev-check-code:
+	$(MAKE) dev-lint
+	$(MAKE) dev-test
+	$(MAKE) dev-type-check
 
-migrate-revision:
-	@read -p "Enter migration name: " migration_name; \
-	echo "Migration is being sent to alembic as $$migration_name"; \
-	docker compose exec bot uv run alembic revision --autogenerate -m "$$migration_name"
+# === migrations ===
+dev-migrate-stamp:
+	$(DEV_EXEC) uv run alembic stamp head
 
-database-update:
-	docker compose exec bot uv run alembic upgrade head
+dev-migrate-new:
+	read -p "<[dev] $(EXEC_SERVICE) /> Name the revision: " revision_name; \
+	$(DEV_EXEC) uv run alembic revision --autogenerate -m "$$revision_name"
 
-down:
-	docker compose down
+dev-migrate-head:
+	$(DEV_EXEC) uv run alembic upgrade head
+	
+dev-migrate-up:
+	$(DEV_EXEC) uv run alembic upgrade +1
 
-build:
-	docker compose up -d --build --remove-orphans
+dev-migrate-down:
+	$(DEV_EXEC) uv run alembic downgrade -1
 
-up:
-	docker compose up -d 
+dev-migrate-base:
+	$(DEV_EXEC) uv run alembic downgrade base
 
-show-logs:
-	docker compose logs -f
+dev-migrate-to:
+	read -p "<[dev] $(EXEC_SERVICE) /> Enter the <revision_id>: " revision_id; \
+	$(DEV_EXEC) uv run alembic upgrade $$revision_id
 
-rebuild: down build
+dev-migrations-history:
+	$(DEV_EXEC) uv run alembic history --verbose
 
+dev-migrations-current:
+	$(DEV_EXEC) uv run alembic current
+
+
+
+### CI Commands
+### ------------------------------------------------------------------------
+
+# docker compose file which will be working with is: 
+#
+# >>> docker compose -f ./docker-compose.yaml -f ./resources/docker/compose/ci.yaml
+
+# === Constants ===
+CI_COMPOSE = docker compose -f ./docker-compose.yaml -f ./resources/docker/compose/ci.yaml
+CI_EXEC = $(CI_COMPOSE) exec $(EXEC_SERVICE)
+
+# === Docker Compose === 
+ci-up:
+	$(CI_COMPOSE) up -d
+
+ci-build:
+	$(CI_COMPOSE) build
+
+ci-test:
+	$(CI_EXEC) uv run pytest --quiet
+
+ci-type-check:
+	$(CI_EXEC) uv run pyright
+
+ci-lint:
+	$(CI_EXEC) uv run ruff check .

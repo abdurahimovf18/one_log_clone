@@ -21,7 +21,7 @@
 #   - Pgbouncer is configured as a connection pooler in front of Postgres.
 
 x-constants:
-  PROJECT_ROOT: &PROJECT_ROOT "./../../../"
+  APPLICATION_ROOT_DIRECTORY: &APPLICATION_ROOT_DIRECTORY "./../../../"
 
 x-application-environment: &application-environment
   DEBUG: ${DEBUG}
@@ -45,18 +45,20 @@ services:
   # ----------------------
   # Exec Service
   # ----------------------
-  exec:
+  exec-service:
     build:
       dockerfile: ./resources/docker/services/exec/Dockerfile.dev
-      context: *PROJECT_ROOT
+      context: *APPLICATION_ROOT_DIRECTORY
     environment:
       <<: *application-environment
+    entrypoint: ["tail", "-f", "/dev/null"]
     networks:
       - application
     depends_on:
       - redis
       - database
       - pgbouncer
+    restart: unless-stopped
 
   # -------------------------
   # Bot service
@@ -64,7 +66,8 @@ services:
   bot:
     build:
       dockerfile: ./resources/docker/services/application/Dockerfile.prod
-      context: *PROJECT_ROOT
+      context: *APPLICATION_ROOT_DIRECTORY
+    entrypoint: ["sh", "./resources/docker/services/bot/entrypoint.sh"]
     environment:
       <<: *application-environment
     networks:
@@ -73,6 +76,7 @@ services:
       - redis
       - database
       - pgbouncer
+    restart: unless-stopped
 
   # -------------------------
   # Redis (cache + broker)
@@ -87,6 +91,9 @@ services:
       interval: 7s
       timeout: 2s
       retries: 3
+    # sysctls:
+    #   mv.overcommit_memory: 1
+    restart: unless-stopped
 
   # -------------------------
   # Postgres (primary DB)
@@ -104,19 +111,19 @@ services:
       interval: 7s
       timeout: 5s
       retries: 2
+    restart: unless-stopped
     
   # -------------------------
   # PgBouncer (DB connection pooler)
   # -------------------------
   pgbouncer:
     image: "bitnami/pgbouncer:1.24.1-debian-12-r10"
-    restart: always
     environment:
       POSTGRESQL_HOST: database
       POSTGRESQL_USERNAME: ${DATABASE_USER}
       POSTGRESQL_PASSWORD: ${DATABASE_PASSWORD}
       POSTGRESQL_PORT: 5432
-      PGBOUNCER_DATABASE: ${POSTGRES_DB}
+      PGBOUNCER_DATABASE: ${DATABASE_NAME}
       PGBOUNCER_AUTH_TYPE: "md5"
       PGBOUNCER_POOL_MODE: "transaction"
       PGBOUNCER_MAX_CLIENT_CONN: 2000
@@ -131,3 +138,4 @@ services:
       retries: 2
     networks:
       - application
+    restart: unless-stopped
