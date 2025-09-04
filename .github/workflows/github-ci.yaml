@@ -45,6 +45,9 @@ jobs:
           REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
           REDIS_DB: ${{ secrets.REDIS_DB }}
 
+      - name: Run Migrations
+        run: make ci-migrate
+
       - name: Run Tests
         run: make ci-test
 

@@ -159,3 +159,7 @@ ci-type-check:
 
 ci-lint:
 	$(CI_EXEC) uv run ruff check .
+
+ci-migrate:
+	$(CI_EXEC) uv run alembic upgrade head
+	
