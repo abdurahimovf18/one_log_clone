@@ -22,7 +22,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Docker Compose 
-        uses: docker/setup-compose-action@latest
+        uses: docker/setup-compose-action@v1
         with:
           version: "latest"
       
