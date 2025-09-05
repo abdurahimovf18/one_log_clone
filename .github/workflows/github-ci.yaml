@@ -5,111 +5,40 @@ on:
   pull_request:
 
 jobs:
-
-  # push-images:
-  #   needs: [lints, tests, type-checks]
-  #   name: Push images
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #      - name: Echo Implementation
-  #        run: echo Pushing docker container should be implemented using Harbor or other solutions.
+  push-images:
+    needs: [lints, tests, type-checks]
+    name: Push images
+    runs-on: ubuntu-latest
+    steps:
+       - name: Echo Implementation
+         run: echo Pushing docker container should be implemented using Harbor or other solutions.
 
   type-checks:
     name: Run Type Checkers
     runs-on: ubuntu-latest
-    environment: CI
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Setup Docker Compose 
-        uses: docker/setup-compose-action@v1
-        with:
-          version: "latest"
-
-      - name: Create .env file for docker-compose
-        run: |
-          cat <<EOF > .env
-          DEBUG=${{ secrets.DEBUG }}
-          LOG_LEVEL=${{ secrets.LOG_LEVEL }}
-          BOT_TOKEN=${{ secrets.BOT_TOKEN }}
-          DATABASE_USER=${{ secrets.DATABASE_USER }}
-          DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}
-          DATABASE_HOST=${{ secrets.DATABASE_HOST }}
-          DATABASE_PORT=${{ secrets.DATABASE_PORT }}
-          DATABASE_NAME=${{ secrets.DATABASE_NAME }}
-          REDIS_HOST=${{ secrets.REDIS_HOST }}
-          REDIS_PORT=${{ secrets.REDIS_PORT }}
-          REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}
-          REDIS_DB=${{ secrets.REDIS_DB }}
-          EOF
-
-      - name: Build Docker Images
-        run: make ci-build
-
-      - name: Up Docker Containers
-        run: make ci-up
-
-      - name: Run Migrations
-        run: make ci-migrate
+      - name: Setup CI Docker Compose
+        uses: ./.github/actions/setup-ci-compose 
 
       - name: Run Tests
         run: make ci-test
 
-  # lints:
-  #   name: Run Linters
-  #   runs-on: ubuntu-latest
-  #   strategy:
-  #     matrix:
-  #       python-version: ["3.12.4"]
-  #       uv-version: ["0.7.11"]
+  linters:
+    name: Run Linters
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup CI Docker Compose
+        uses: ./.github/actions/setup-ci-compose 
 
-  #   steps:
-  #     - name: Checkout Code
-  #       uses: actions/checkout@v4
+      - name: Run Tests
+        run: make ci-lint
+    
+  tests:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup CI Docker Compose
+        uses: ./.github/actions/setup-ci-compose 
 
-  #     - name: Set up Python
-  #       uses: actions/setup-python@v5
-  #       with:
-  #         python-version: ${{ matrix.python-version }}
-
-  #     - name: Set up uv
-  #       uses: astral-sh/setup-uv@v6
-  #       with:
-  #         version: ${{ matrix.uv-version }}
-  #         python-version: ${{ matrix.python-version }}
-
-  #     - name: Install Dev Dependencies
-  #       run: uv sync --dev
-
-  #     - name: Run Tests
-  #       run: make lint
-
-  # tests:
-  #   name: Run Tests
-  #   runs-on: ubuntu-latest
-  #   strategy:
-  #     matrix:
-  #       python-version: ["3.12.4"]
-  #       uv-version: ["0.7.11"]
-
-  #   steps:
-  #     - name: Checkout Code
-  #       uses: actions/checkout@v4
-
-  #     - name: Set up Python
-  #       uses: actions/setup-python@v5
-  #       with:
-  #         python-version: ${{ matrix.python-version }}
-
-  #     - name: Set up uv
-  #       uses: astral-sh/setup-uv@v6
-  #       with:
-  #         version: ${{ matrix.uv-version }}
-  #         python-version: ${{ matrix.python-version }}
-
-  #     - name: Install Dev Dependencies
-  #       run: uv sync --dev
-
-  #     - name: Run Tests
-  #       run: make test-quiet
+      - name: Run Tests
+        run: make ci-test
