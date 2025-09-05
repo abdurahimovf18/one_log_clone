@@ -3,9 +3,6 @@ description: "Setup Docker Compose For Github Actions CI/CD"
 runs:
   using: "composite"
   steps:
-    - name: Checkout Code
-      uses: actions/checkout@v4
-
     - name: Setup Docker Compose 
       uses: docker/setup-compose-action@v1
       with:
