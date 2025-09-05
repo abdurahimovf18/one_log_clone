@@ -22,5 +22,5 @@ services:
       dockerfile: ./resources/docker/services/exec/Dockerfile.dev
     volumes: *ci-volumes
 
-  bot:
-    volumes: *application-volumes
+  bot: null
+  
