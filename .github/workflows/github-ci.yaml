@@ -23,7 +23,7 @@ jobs:
       - name: Run Tests
         run: make ci-test
 
-  linters:
+  lints:
     name: Run Linters
     runs-on: ubuntu-latest
     steps:
