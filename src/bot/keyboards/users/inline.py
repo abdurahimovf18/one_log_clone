@@ -11,7 +11,7 @@ def language_select(languages: tuple[UserLanguage, ...] = LANGUAGES) -> InlineKe
             [
                 InlineKeyboardButton(
                     text=lang.display_text, 
-                    callback_data=lang.language
+                    callback_data=lang.language.value
                 )
                 for lang in languages
             ]

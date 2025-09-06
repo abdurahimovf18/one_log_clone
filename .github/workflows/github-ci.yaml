@@ -7,15 +7,17 @@ on:
 jobs:
   push-images:
     needs: [lints, tests, type-checks]
-    name: Push images
+    name: Build and Push Images
     runs-on: ubuntu-latest
+    fail-fast: true
     steps:
        - name: Echo Implementation
-         run: echo Pushing docker container should be implemented using Harbor or other solutions.
+         run: echo "TODO: Push Images to Habor or DockerHUB later."
 
   type-checks:
-    name: Run Type Checkers
+    name: Type Checks
     runs-on: ubuntu-latest
+    fail-fast: true
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -38,11 +40,12 @@ jobs:
           REDIS_DB: ${{ secrets.REDIS_DB }}
 
       - name: Run Tests
-        run: make ci-test
+        run: make ci-type-check
 
   lints:
-    name: Run Linters
+    name: Linters
     runs-on: ubuntu-latest
+    fail-fast: true
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -52,12 +55,13 @@ jobs:
         uses: ./.github/actions/setup-ci-compose
         with: *ci-compose-vars
 
-      - name: Run Tests
+      - name: Run Linters
         run: make ci-lint
     
   tests:
-    name: Run Tests
+    name: Tests
     runs-on: ubuntu-latest
+    fail-fast: true
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
