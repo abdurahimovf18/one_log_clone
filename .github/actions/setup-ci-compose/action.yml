@@ -49,7 +49,8 @@ runs:
         REDIS_PASSWORD=${{ inputs.REDIS_PASSWORD }}
         REDIS_DB=${{ inputs.REDIS_DB }}
         EOF
-
+      shell: bash
+      
     - name: Build Docker Images
       run: make ci-build
 
