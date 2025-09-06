@@ -1,5 +1,30 @@
 name: "Setup Docker Compose"
 description: "Setup Docker Compose For Github Actions CI/CD"
+inputs:
+  DEBUG:
+    required: true
+  LOG_LEVEL:
+    required: true
+  BOT_TOKEN:
+    required: true
+  DATABASE_USER:
+    required: true
+  DATABASE_PASSWORD:
+    required: true
+  DATABASE_HOST:
+    required: true
+  DATABASE_PORT:
+    required: true
+  DATABASE_NAME:
+    required: true
+  REDIS_HOST:
+    required: true
+  REDIS_PORT:
+    required: true
+  REDIS_PASSWORD:
+    required: true
+  REDIS_DB:
+    required: true
 runs:
   using: "composite"
   steps:
@@ -11,18 +36,18 @@ runs:
     - name: Create .env file for docker-compose
       run: |
         cat <<EOF > .env
-        DEBUG=${{ secrets.DEBUG }}
-        LOG_LEVEL=${{ secrets.LOG_LEVEL }}
-        BOT_TOKEN=${{ secrets.BOT_TOKEN }}
-        DATABASE_USER=${{ secrets.DATABASE_USER }}
-        DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}
-        DATABASE_HOST=${{ secrets.DATABASE_HOST }}
-        DATABASE_PORT=${{ secrets.DATABASE_PORT }}
-        DATABASE_NAME=${{ secrets.DATABASE_NAME }}
-        REDIS_HOST=${{ secrets.REDIS_HOST }}
-        REDIS_PORT=${{ secrets.REDIS_PORT }}
-        REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}
-        REDIS_DB=${{ secrets.REDIS_DB }}
+        DEBUG=${{ inputs.DEBUG }}
+        LOG_LEVEL=${{ inputs.LOG_LEVEL }}
+        BOT_TOKEN=${{ inputs.BOT_TOKEN }}
+        DATABASE_USER=${{ inputs.DATABASE_USER }}
+        DATABASE_PASSWORD=${{ inputs.DATABASE_PASSWORD }}
+        DATABASE_HOST=${{ inputs.DATABASE_HOST }}
+        DATABASE_PORT=${{ inputs.DATABASE_PORT }}
+        DATABASE_NAME=${{ inputs.DATABASE_NAME }}
+        REDIS_HOST=${{ inputs.REDIS_HOST }}
+        REDIS_PORT=${{ inputs.REDIS_PORT }}
+        REDIS_PASSWORD=${{ inputs.REDIS_PASSWORD }}
+        REDIS_DB=${{ inputs.REDIS_DB }}
         EOF
 
     - name: Build Docker Images
