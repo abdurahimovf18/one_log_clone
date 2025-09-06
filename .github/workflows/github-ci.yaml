@@ -9,7 +9,6 @@ jobs:
     needs: [lints, tests, type-checks]
     name: Build and Push Images
     runs-on: ubuntu-latest
-    fail-fast: true
     steps:
        - name: Echo Implementation
          run: | 
@@ -18,7 +17,6 @@ jobs:
   type-checks:
     name: Type Checks
     runs-on: ubuntu-latest
-    fail-fast: true
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -46,7 +44,6 @@ jobs:
   lints:
     name: Linters
     runs-on: ubuntu-latest
-    fail-fast: true
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -62,7 +59,6 @@ jobs:
   tests:
     name: Tests
     runs-on: ubuntu-latest
-    fail-fast: true
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
