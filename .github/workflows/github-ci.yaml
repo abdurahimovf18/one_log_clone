@@ -12,7 +12,8 @@ jobs:
     fail-fast: true
     steps:
        - name: Echo Implementation
-         run: echo "TODO: Push Images to Habor or DockerHUB later."
+         run: | 
+          echo "TODO: Push Images to Habor or DockerHUB later."
 
   type-checks:
     name: Type Checks
