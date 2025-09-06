@@ -23,7 +23,7 @@ jobs:
       - id: "setup_docker_compose"
         name: "Setup Docker Compose"
         uses: ./.github/actions/setup-ci-compose
-        with: &ci-compose-vars
+        with: &ci-compose-vars  # ci-compose-vars is being used by other runs in this github workflow
           DEBUG: ${{ secrets.DEBUG }}
           LOG_LEVEL: ${{ secrets.LOG_LEVEL }}
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
