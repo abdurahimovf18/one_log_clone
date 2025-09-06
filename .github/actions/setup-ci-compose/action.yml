@@ -25,6 +25,7 @@ inputs:
     required: true
   REDIS_DB:
     required: true
+  
 runs:
   using: "composite"
   steps:
@@ -50,12 +51,15 @@ runs:
         REDIS_DB=${{ inputs.REDIS_DB }}
         EOF
       shell: bash
-      
+
     - name: Build Docker Images
       run: make ci-build
+      shell: bash
 
     - name: Up Docker Containers
       run: make ci-up
+      shell: bash
 
     - name: Run Migrations
       run: make ci-migrate
+      shell: bash
