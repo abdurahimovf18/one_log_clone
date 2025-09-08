@@ -1,11 +1,12 @@
 import sys
-from datetime import UTC, timezone
+from datetime import UTC, timedelta, timezone
 from pathlib import Path
 
+from aiogram.utils.i18n import lazy_gettext as __
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pythonjsonlogger import json
 
-from .enums import LogLevel, UserLanguage, UserLanguages
+from .enums import LogLevel, TimeDelta, UserLanguage, UserLanguages
 
 ROOT: Path = Path(__file__).resolve().parent.parent.parent
 
@@ -112,9 +113,9 @@ LOGGING_CONFIG: dict[str, object] = {
 # To add new languages, update the database schema and manage translations.
 # See the Makefile for commands to handle translation updates with pybabel.
 LANGUAGES: tuple[UserLanguage, ...] = (
-    UserLanguage(language=UserLanguages.EN, display_text="🇺🇸 EN"),
-    UserLanguage(language=UserLanguages.UZ, display_text="🇺🇿 UZ"),
-    UserLanguage(language=UserLanguages.RU, display_text="🇷🇺 RU"),
+    UserLanguage(code=UserLanguages.EN, flag="🇺🇸"),
+    UserLanguage(code=UserLanguages.UZ, flag="🇺🇿"),
+    UserLanguage(code=UserLanguages.RU, flag="🇷🇺"),
 )
 
 DEFAULT_LANGUAGE: UserLanguages = UserLanguages.EN
@@ -125,3 +126,82 @@ PASSWORD_HASH_MEMORY_COST = 65536      # Memory in KiB (Argon2 / scrypt)
 PASSWORD_HASH_PARALLELISM = 2          # Threads / lanes
 PASSWORD_HASH_LENGTH = 32              # Output length in bytes
 PASSWORD_HASH_SALT_LENGTH = 16         # Salt length in bytes
+
+# === BOT Limits ===
+MESSAGE_RATE_PER_SECOND = 30
+BOT_THROTTLING_PER_SECOND = 3
+
+# === Model Settings ===
+INTERVALS: tuple[TimeDelta, ...] = (
+    TimeDelta(
+        label=__("30 Minutes"),
+        value=timedelta(minutes=30),
+        callback_value="30m"
+    ),
+    TimeDelta(
+        label=__("1 Hour"),
+        value=timedelta(hours=1),
+        callback_value="1h"
+    ),
+    TimeDelta(
+        label=__("1 Hour 30 Minutes"),
+        value=timedelta(hours=1, minutes=30),
+        callback_value="1h_30m"
+    ),
+    TimeDelta(
+        label=__("2 Hours"),
+        value=timedelta(hours=2),
+        callback_value="2h"
+    ),
+    TimeDelta(
+        label=__("2 Hours 30 Minutes"),
+        value=timedelta(hours=2, minutes=30),
+        callback_value="2h_30m"
+    ),
+)
+
+DEFAULT_INTERVAL: TimeDelta = INTERVALS[1]
+DURATIONS: tuple[TimeDelta, ...] = (
+    TimeDelta(
+        label=__("3 Hours"),
+        value=timedelta(hours=3),
+        callback_value="3h"
+    ),
+    TimeDelta(
+        label=__("6 Hours"),
+        value=timedelta(hours=6),
+        callback_value="6h"
+    ),
+    TimeDelta(
+        label=__("9 Hours"),
+        value=timedelta(hours=9),
+        callback_value="9h"
+    ),
+    TimeDelta(
+        label=__("12 Hours"),
+        value=timedelta(hours=12),
+        callback_value="12h"
+    ),
+    TimeDelta(
+        label=__("1 Days"),
+        value=timedelta(hours=1),
+        callback_value="1d"
+    ),
+    TimeDelta(
+        label=__("3 Days"),
+        value=timedelta(hours=3),
+        callback_value="3d"
+    ),
+    TimeDelta(
+        label=__("7 Days"),
+        value=timedelta(hours=7),
+        callback_value="7d"
+    ),
+    TimeDelta(
+        label=__("30 Days"),
+        value=timedelta(hours=30),
+        callback_value="30d"
+    ),
+)
+
+DEFAULT_DURATION: TimeDelta = DURATIONS[4]

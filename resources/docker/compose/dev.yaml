@@ -50,6 +50,7 @@ services:
 
   bot:
     volumes: *application-volumes
+    
 
   database:
     volumes:

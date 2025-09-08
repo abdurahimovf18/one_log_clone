@@ -1,5 +1,8 @@
+from datetime import timedelta
 from enum import Enum
 from typing import NamedTuple
+
+from babel.support import LazyProxy
 
 
 class LogLevel(str, Enum):
@@ -17,5 +20,11 @@ class UserLanguages(Enum):
 
 
 class UserLanguage(NamedTuple):
-    language: UserLanguages
-    display_text: str
+    code: UserLanguages
+    flag: str
+
+
+class TimeDelta(NamedTuple):
+    label: LazyProxy
+    value: timedelta
+    callback_value: str

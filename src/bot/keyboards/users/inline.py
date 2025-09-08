@@ -10,10 +10,10 @@ def language_select(languages: tuple[UserLanguage, ...] = LANGUAGES) -> InlineKe
         inline_keyboard=[
             [
                 InlineKeyboardButton(
-                    text=lang.display_text, 
-                    callback_data=lang.language.value
+                    text=f"{language.flag} {language.code.value}", 
+                    callback_data=language.code.value
                 )
-                for lang in languages
+                for language in languages
             ]
         ]
     )

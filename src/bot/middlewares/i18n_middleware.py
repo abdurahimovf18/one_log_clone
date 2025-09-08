@@ -10,7 +10,7 @@ from aiogram.types import TelegramObject, Update
 from aiogram.utils.i18n.core import I18n
 
 from src.config.settings import DEFAULT_LANGUAGE
-from src.core.queries import user_languages
+from src.core.queries import tg_users
 from src.infrastructure.database import session_factory
 
 
@@ -37,15 +37,17 @@ class I18nMiddleware(BaseMiddleware):
 
     async def get_locale(self, event: Update, data: dict[str, object]) -> str:  # noqa: ARG002
         if event.callback_query:
-            chat_id = event.callback_query.from_user.id
+            user_id = event.callback_query.from_user.id
         elif event.message:
-            chat_id = event.message.from_user.id  # type: ignore
+            user_id = event.message.from_user.id  # type: ignore
+        elif event.inline_query:
+            user_id = event.inline_query.from_user.id
         else:
             raise ValueError(f"Unsupported event detected on {type(self).__name__}")
 
         async with session_factory() as session:
-            user_language = await user_languages.get_by_chat_id(
-                user_languages.p.GetByChatIdDTO(chat_id=chat_id), session=session
+            user_language = await tg_users.get_by_chat_id(
+                tg_users.p.GetByChatIdDTO(chat_id=user_id), session=session
             )
 
             if user_language is None:

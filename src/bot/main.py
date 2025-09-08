@@ -4,9 +4,9 @@ import logging.config
 
 import uvloop
 
+import src.bot.loader  # type: ignore  # noqa: F401
+from src.bot.infrastructure import bot, dp
 from src.config.settings import LOGGING_CONFIG
-
-from .loader import bot, dp
 
 
 async def main():

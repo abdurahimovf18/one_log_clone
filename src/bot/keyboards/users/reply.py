@@ -9,11 +9,11 @@ def main_menu() -> ReplyKeyboardMarkup:
         keyboard=[
             [
                 KeyboardButton(text=_("♻️ Send Message")),
+                KeyboardButton(text=_("🗂 Messages History")),
             ],
             [
-                KeyboardButton(text=_("🗂 Messages History")),
                 KeyboardButton(text=_("✍️ Leave Feedback")),
+                KeyboardButton(text=_("⚙️ Settings"))
             ]
         ]
     )
-

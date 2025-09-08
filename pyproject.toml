@@ -9,9 +9,11 @@ dependencies = []
 [dependency-groups]
 app = [
     "aiogram[i18n]>=3.22.0",
+    "aiolimiter>=1.2.1",
     "argon2-cffi>=25.1.0",
     "dishka>=1.6.0",
     "faststream[rabbit]>=0.5.48",
+    "orjson>=3.11.3",
     "psycopg[async,binary]>=3.2.9",
     "pydantic-settings>=2.10.1",
     "python-json-logger>=3.3.0",
@@ -30,4 +32,15 @@ lints = [
 tests = [
     "pytest>=8.4.1",
     "pytest-asyncio>=1.1.0",
+]
+
+[tool.pyright]
+exclude = [
+    "**/node_modules",
+    "**/__pycache__",
+    "**/.venv/**",
+    "**/venv/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/alembic/**"
 ]

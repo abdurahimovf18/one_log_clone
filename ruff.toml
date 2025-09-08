@@ -18,10 +18,17 @@ ignore = [
   "TCH",  # type checking
 ]
 
+exclude = [
+  "alembic",
+  "locales/",
+]
+
+
 [lint.per-file-ignores]
 "tests/**/*.py" = ["S101"]
 "src/config/logging_config.py" = ["E501"]
 "alembic/**/*.py" = ["E501"]
+"src/bot/texts/**/*.py" = ["RUF001"]
 
 [format]
 quote-style = "double"

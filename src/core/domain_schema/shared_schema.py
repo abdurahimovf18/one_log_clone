@@ -4,7 +4,7 @@ from typing import Annotated
 
 from pydantic import Field
 
-type ID = Annotated[
+type UUID_ID = Annotated[
     uuid.UUID,
     Field()
 ]
