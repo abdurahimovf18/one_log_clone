@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-07 16:13+0500\n"
+"POT-Creation-Date: 2025-09-09 21:57+0500\n"
 "PO-Revision-Date: 2025-09-07 16:13+0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: src/bot/keyboards/shared.py:7
+#: src/bot/keyboards/shared.py:7 src/bot/texts/users/shared.py:5
 msgid "⬅️ Back"
 msgstr "⬅️ Orqaga"
 
@@ -55,19 +55,70 @@ msgstr ""
 msgid "⚙️ Settings"
 msgstr ""
 
-#: src/bot/texts/users/auth.py:6
+#: src/bot/middlewares/throttling_middleware.py:82
+msgid "Too much requests sent, Please slow down..."
+msgstr ""
+
+#: src/bot/texts/users/auth.py:5
 msgid "Hi there!, Welcome to the bot."
 msgstr ""
 
-#: src/bot/texts/users/auth.py:10
+#: src/bot/texts/users/auth.py:9
 msgid "Hi there!, What we gonna start with today?"
 msgstr ""
 
-#: src/bot/texts/users/auth.py:15
+#: src/bot/texts/users/auth.py:22
+#, python-brace-format
+msgid "Bot language has been changed to: {language}"
+msgstr ""
+
+#: src/bot/texts/users/auth.py:28
+msgid ""
+"Please choose <b>Sign In</b> if you already have an account, or <b>Sign "
+"Up</b> to create one."
+msgstr ""
+
+#: src/bot/texts/users/auth.py:35
+msgid ""
+"Ok, To <b>SignIn</b> your account, please provide some credentials of "
+"your account..."
+msgstr ""
+
+#: src/bot/texts/users/auth.py:42
+msgid ""
+"Ok, To <b>SignUp</b> your account, please provide some credentials of "
+"your account..."
+msgstr ""
+
+#: src/bot/texts/users/auth.py:49
+msgid "Please, enter your account <b>username</b>."
+msgstr ""
+
+#: src/bot/texts/users/auth.py:55
+msgid "Please, enter your account <b>password</b>."
+msgstr ""
+
+#: src/bot/texts/users/auth.py:60
+msgid ""
+"<b>Sign In</b> failed, invalid username or password. Please check your "
+"credentials and try again."
+msgstr ""
+
+#: src/bot/texts/users/auth.py:67
+msgid "✅ You have loggined in to your account successfully..."
+msgstr ""
+
+#: src/bot/texts/users/auth.py:73
 #, python-brace-format
 msgid ""
-"{flag} Please, choose the language you are comfortable with from the list"
-" below...\n"
+"Sorry, username <b>{username}</b> is already in use, Please try another "
+"username"
+msgstr ""
+
+#: src/bot/texts/users/auth.py:80
+msgid ""
+"✅ Your account have been created successfully, now you can <b>SignIn</b> "
+"to your account and start working with it..."
 msgstr ""
 
 #: src/bot/texts/users/exceptions.py:6
@@ -76,7 +127,76 @@ msgid ""
 "support if the problem persists."
 msgstr ""
 
-#: src/bot/texts/users/shared.py:6
-msgid "Hi there!"
+#: src/config/settings.py:136
+msgid "Start or restart the bot"
+msgstr "Запустить или перезапустить бота"
+
+#: src/config/settings.py:137
+msgid "Show available commands and usage"
+msgstr "Показать доступные команды и их использование"
+
+#: src/config/settings.py:138
+msgid "Switch your preferred language"
+msgstr "Изменить предпочитаемый язык"
+
+#: src/config/settings.py:144
+msgid "30 Minutes"
 msgstr ""
+
+#: src/config/settings.py:149
+msgid "1 Hour"
+msgstr ""
+
+#: src/config/settings.py:154
+msgid "1 Hour 30 Minutes"
+msgstr ""
+
+#: src/config/settings.py:159
+msgid "2 Hours"
+msgstr ""
+
+#: src/config/settings.py:164
+msgid "2 Hours 30 Minutes"
+msgstr ""
+
+#: src/config/settings.py:173
+msgid "3 Hours"
+msgstr ""
+
+#: src/config/settings.py:178
+msgid "6 Hours"
+msgstr ""
+
+#: src/config/settings.py:183
+msgid "9 Hours"
+msgstr ""
+
+#: src/config/settings.py:188
+msgid "12 Hours"
+msgstr ""
+
+#: src/config/settings.py:193
+msgid "1 Days"
+msgstr ""
+
+#: src/config/settings.py:198
+msgid "3 Days"
+msgstr ""
+
+#: src/config/settings.py:203
+msgid "7 Days"
+msgstr ""
+
+#: src/config/settings.py:208
+msgid "30 Days"
+msgstr ""
+
+#~ msgid ""
+#~ "{flag} Please, choose the language you"
+#~ " are comfortable with from the list"
+#~ " below...\n"
+#~ msgstr ""
+
+#~ msgid "Hi there!"
+#~ msgstr ""
 

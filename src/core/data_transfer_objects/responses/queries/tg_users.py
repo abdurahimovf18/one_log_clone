@@ -22,3 +22,6 @@ class UpdateDTO(BaseDTO):
     language: TgUser.language
     created_at: TgUser.created_at
     updated_at: TgUser.updated_at
+
+
+class SetUserIdByChatId(BaseDTO): ...

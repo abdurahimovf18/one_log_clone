@@ -12,4 +12,5 @@ class CreateDTO(BaseDTO):
 
 class GetPasswordByUsername(BaseDTO):
     password: UserAuth.password
+    user_id: UserAuth.user_id
     

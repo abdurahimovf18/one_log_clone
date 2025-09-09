@@ -34,3 +34,16 @@ async def get_password_by_username(
     if result_model is not None:
         return r.GetPasswordByUsername.model_validate(result_model)
     
+
+async def exists_by_username(
+        data: p.ExistsByUsernameDTO, *, session: AsyncSession
+    ) -> bool:
+
+    query = (
+        sa.select(
+            sa.exists(model)
+            .where(model.username == data.username)
+        )
+    )
+    result = await session.execute(query)
+    return result.scalar_one()

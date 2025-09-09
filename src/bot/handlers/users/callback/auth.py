@@ -96,6 +96,6 @@ async def switch_auth_method_to_signin(
     async with send_rate_limiter:
         await call.message.answer(  # type: ignore
             texts.auth.username_request(),
-            reply_markup=keyboards.inline.auth_signin_switch()
+            reply_markup=keyboards.inline.auth_signup_switch()
         )
     

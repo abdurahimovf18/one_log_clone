@@ -6,7 +6,7 @@ from aiogram.utils.i18n import lazy_gettext as __
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pythonjsonlogger import json
 
-from .enums import LogLevel, TimeDelta, UserLanguage, UserLanguages
+from .enums import BotCommand, LogLevel, TimeDelta, UserLanguage, UserLanguages
 
 ROOT: Path = Path(__file__).resolve().parent.parent.parent
 
@@ -127,9 +127,15 @@ PASSWORD_HASH_PARALLELISM = 2          # Threads / lanes
 PASSWORD_HASH_LENGTH = 32              # Output length in bytes
 PASSWORD_HASH_SALT_LENGTH = 16         # Salt length in bytes
 
-# === BOT Limits ===
+# === BOT Settings ===
 MESSAGE_RATE_PER_SECOND = 30
 BOT_THROTTLING_PER_SECOND = 3
+
+BOT_COMMANDS: list[BotCommand] = [
+    BotCommand(command="start", description=__("Start or restart the bot")),
+    BotCommand(command="help", description=__("Show available commands and usage")),
+    BotCommand(command="language", description=__("Switch your preferred language")),
+]
 
 # === Model Settings ===
 INTERVALS: tuple[TimeDelta, ...] = (

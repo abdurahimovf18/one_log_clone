@@ -55,9 +55,9 @@ async def get_by_chat_id(
 
 
 async def create(
-    data: p.CreateDTO,
-    *,
-    session: AsyncSession
+        data: p.CreateDTO,
+        *,
+        session: AsyncSession
     ) -> r.CreateDTO:
     model_object = model(**data.model_dump())
     session.add(model_object)
@@ -65,23 +65,15 @@ async def create(
     return r.CreateDTO.model_validate(model_object)
 
 
-async def update(
-    data: p.UpdateDTO,
-    *,
-    session: AsyncSession,
-    ) -> r.UpdateDTO | None:
-    """
-    Updates model language filtering by chat_id.
-    """
-
+async def set_user_id_by_chat_id(
+        data: p.SetUserIdByChatId,
+        *,
+        session: AsyncSession,
+    ) -> None:
+    
     stmt = (
         sa.update(model)
+        .values({"user_id": data.user_id})
         .where(model.chat_id == data.chat_id)
-        .values(language=data.language)
-        .returning(model)
     )
-    result = await session.execute(stmt)
-    result_model = result.scalar_one_or_none()
-    if result_model is not None:
-        return r.UpdateDTO.model_validate(result_model)
-    
+    await session.execute(stmt)

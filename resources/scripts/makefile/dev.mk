@@ -48,10 +48,10 @@ dev-show-logs:
 	$(DEV_COMPOSE) logs -f
 
 # === Localization/I18n ===
-dev-i18n-extract:
-	uv run pybabel extract --input-dirs=src/ -o locales/messages.pot
+# dev-i18n-extract:
+# 	uv run pybabel extract --input-dirs=src/ -o locales/messages.pot
 
-dev-i18n-extract-ext:
+dev-i18n-extract:
 	uv run pybabel extract -k _:1,1t -k _:1,2 -k __ --input-dirs=src/ -o locales/messages.pot
 
 dev-i18n-compile:

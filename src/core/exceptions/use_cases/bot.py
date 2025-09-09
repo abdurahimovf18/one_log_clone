@@ -11,3 +11,8 @@ class PasswordIncorrect(Forbidden):
 
 class UserAlreadyLoggined(NoAction):
     msg = "User is already logged in."
+
+
+class UsernameIsTaken(Forbidden):
+    msg = "This username is already in use."
+    

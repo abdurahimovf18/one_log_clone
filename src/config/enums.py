@@ -25,6 +25,11 @@ class UserLanguage(NamedTuple):
 
 
 class TimeDelta(NamedTuple):
-    label: LazyProxy
+    label: LazyProxy | str
     value: timedelta
     callback_value: str
+
+
+class BotCommand(NamedTuple):
+    command: str
+    description: LazyProxy

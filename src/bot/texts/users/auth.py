@@ -55,8 +55,28 @@ def password_request() -> str:
         "Please, enter your account <b>password</b>."
     )
 
-# def signin_failed() -> str:
-#     return _(
-#         "<b>Sign In</b> failed, invalid username or password. "
-#         "Please check your credentials and try again."
-#     )
+def signin_failed() -> str:
+    return _(
+        "<b>Sign In</b> failed, invalid username or password. "
+        "Please check your credentials and try again."
+    )
+
+
+def signin_success() -> str:
+    return _(
+        "✅ You have loggined in to your account successfully..."
+    )
+
+
+def username_is_taken(username: str) -> str:
+    return _(
+        "Sorry, username <b>{username}</b> is already in use, " 
+        "Please try another username"
+    ).format(username=username)
+
+
+def signup_success() -> str:
+    return _(
+        "✅ Your account have been created successfully, now you can "
+        "<b>SignIn</b> to your account and start working with it..."
+    )
