@@ -4,37 +4,58 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 from aiolimiter import AsyncLimiter
 
-from src.bot.filters.users.auth import has_user_tg_account, is_authenticated
+from src.bot.filters import users as filters
 from src.bot.keyboards import users as keyboards
 from src.bot.states import users as states
-from src.bot.texts.users import auth as auth_texts
+from src.bot.texts import users as texts
+from src.bot import di
 
 router = Router(name="command_start")
 
 
-@router.message(CommandStart(), has_user_tg_account, is_authenticated)
-async def start_language_select(msg: Message, state: FSMContext) -> None:
+@router.message(CommandStart(), filters.has_user_tg_account, filters.is_authenticated)
+async def start_language_select(
+        msg: Message, 
+        state: FSMContext,
+        session: di.db_session
+        ) -> None:
     await state.clear()
-    await msg.answer(auth_texts.greet_old_user(), reply_markup=keyboards.reply.main_menu())
+    await msg.answer(
+        texts.auth.greet_old_user(), 
+        reply_markup=keyboards.reply.main_menu()
+    )
 
 
-@router.message(CommandStart(), has_user_tg_account)
+@router.message(CommandStart(), filters.has_user_tg_account)
 async def start(
-        state: FSMContext, 
+        msg: Message,
+        state: FSMContext,
+        send_rate_limiter: di.SendRateLimiter 
     ) -> None:
     await state.clear()
+    await state.set_state(states.Auth.select_method)
+    
+    async with send_rate_limiter:
+        await msg.answer(
+            texts.auth.auth_request(),
+            reply_markup=keyboards.inline.auth_methods_select()
+        )
 
 
 @router.message(CommandStart())
-async def start_new_user(msg: Message, state: FSMContext, msg_limiter: AsyncLimiter) -> None:
+async def start_new_user(
+        msg: Message, 
+        state: FSMContext, 
+        send_rate_limiter: di.SendRateLimiter
+        ) -> None:
     await state.clear()
-    await state.set_state(states.LanguageSelectState.select)
+    await state.set_state(states.TgUserAuth.language_select)
 
-    async with msg_limiter:
-        await msg.answer(auth_texts.greet_new_user())
+    async with send_rate_limiter:
+        await msg.answer(texts.auth.greet_new_user())
 
-    async with msg_limiter:
+    async with send_rate_limiter:
         await msg.answer(
-            auth_texts.request_for_language_select(), 
+            texts.auth.request_for_language_select(), 
             reply_markup=keyboards.inline.language_select()
         )

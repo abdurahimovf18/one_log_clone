@@ -1,8 +1,8 @@
 from aiogram.fsm.state import State, StatesGroup
 
 
-class LanguageSelectState(StatesGroup):
-    select = State()
+class TgUserAuth(StatesGroup):
+    language_select = State()
 
 
 class Auth(StatesGroup):

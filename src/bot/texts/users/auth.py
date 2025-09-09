@@ -17,52 +17,43 @@ def request_for_language_select() -> str:
 """
     
 
+def language_setup_complete(language: str) -> str:
+    return _(
+        "Bot language has been changed to: {language}"
+    )
 
 
-
-# def auth_request() -> str:
-#     return _(
-#         "Before using the bot, Please <b>Sign In</b> or "
-#         "<b>Sign Up</b> first."
-#     )
-
-
-# def language_request() -> str:
-#     return _(
-#         "Please, Select the language, which you're "
-#         "comfortable with from options below..."
-#     )
+def auth_request() -> str:
+    return _(
+        "Please choose <b>Sign In</b> if you already have an account, "
+        "or <b>Sign Up</b> to create one."
+    )
 
 
-# def auth_method_select() -> str:
-#     return _(
-#         "Please choose <b>Sign In</b> if you already have an account, "
-#         "or <b>Sign Up</b> to create one."
-#     )
+def signin_start() -> str:
+    return _(
+        "Ok, To <b>SignIn</b> your account, please provide " \
+        "some credentials of your account..."
+    )
 
 
-# def signin_request() -> str:
-#     return _(
-#         "Please provide your account details to continue with <b>Sign In</b>."
-#     )
+def signup_start() -> str:
+    return _(
+        "Ok, To <b>SignUp</b> your account, please provide " \
+        "some credentials of your account..."
+    )
 
 
-# def signup_request() -> str:
-#     return _(
-#         "Please provide a new account info to continue with <b>Sign Up</b>."
-#     )
+def username_request() -> str:
+    return _(
+        "Please, enter your account <b>username</b>."
+    )
 
 
-# def username_request() -> str:
-#     return _(
-#         "Please, enter your account <b>username</b>."
-#     )
-
-
-# def password_request() -> str:
-#     return _(
-#         "Please, enter your account <b>password</b>."
-#     )
+def password_request() -> str:
+    return _(
+        "Please, enter your account <b>password</b>."
+    )
 
 # def signin_failed() -> str:
 #     return _(

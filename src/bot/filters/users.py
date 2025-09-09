@@ -1,4 +1,4 @@
-from typing import cast
+from typing import Literal, cast
 
 from aiogram.filters import Filter
 from aiogram.types import CallbackQuery, Message, Update
@@ -7,6 +7,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.core.domain_schema.settings import UserLanguages
 from src.core.queries import tg_users
+from src.bot import di
+from src.bot.utils.misc import get_update_text
 
 
 class HasUserTgAccount(Filter):
@@ -15,7 +17,7 @@ class HasUserTgAccount(Filter):
     """
 
     @inject
-    async def __call__(self, update: Update, session: FromDishka[AsyncSession]) -> bool:
+    async def __call__(self, update: Update, session: di.db_session) -> bool:
         user_id = cast(int, update.from_user.id)  # type: ignore
 
         return await tg_users.exists_by_chat_id(
@@ -47,37 +49,26 @@ class IsLanguageMessage(Filter):
     """
 
     async def __call__(self, update: Update) -> bool:
-        if isinstance(update, CallbackQuery):
-            text = cast(str, update.data)
-        elif isinstance(update, Message):
-            text = cast(str, update.text)         
-        else:
-            raise ValueError("Unhandled message action detected")
-        
-        return getattr(UserLanguages, text, None) is not None
+        text = cast(str, get_update_text(update, raise_exc=True))
+        language = getattr(UserLanguages, text, None)
+        return language is not None
+    
 
+class IsAuthMethod(Filter):
+    def __init__(self, method: Literal["all", "signin", "signup"]) -> None:
+        self.method = method
+        self.lookup_methods = {
+            "all": {"signin", "signup"},
+            "signin": {"signin", },
+            "signup": {"signup", },
+        }
 
-# class isNotLanguageSelected(Filter):
-#     """
-#     Checks if user have selected the language.
-#     """
+    async def __call__(self, update: Update) -> bool:
+        text = cast(str, get_update_text(update, raise_exc=True))
+        return text in self.lookup_methods[self.method]
+    
 
-#     @inject
-#     async def __call__(self, update: Update, session: FromDishka[AsyncSession]) -> bool:
-#         if isinstance(update, CallbackQuery):
-#             chat_id = update.from_user.id
-#         elif isinstance(update, Message):
-#             chat_id = update.from_user.id  # type: ignore        
-#         else:
-#             raise ValueError("Unhandled message action detected")
-        
-#         return not await tg_users.exists(
-#             tg_users.p.ExistsDTO(chat_id=chat_id),
-#             session=session
-#         )
-
-
+is_any_auth_method = IsAuthMethod(method="all")
 is_language_message = IsLanguageMessage()
-# is_not_langauge_selected = isNotLanguageSelected()
 is_authenticated = IsAuthenticated()
 has_user_tg_account = HasUserTgAccount()

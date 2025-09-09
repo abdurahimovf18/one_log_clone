@@ -1,20 +1,18 @@
-# import logging
+import logging
 
-# from aiogram import Router
-# from aiogram.fsm.context import FSMContext
-# from aiogram.types import Message
-# from dishka.integrations.aiogram import FromDishka
-# from sqlalchemy.ext.asyncio import AsyncSession
+from aiogram import Router
+from aiogram.fsm.context import FSMContext
+from aiogram.types import Message
+from dishka.integrations.aiogram import FromDishka
+from sqlalchemy.ext.asyncio import AsyncSession
 
-# from src.bot.keyboards import users as keyboards
-# from src.bot.states import users as states
-# from src.bot.texts import users as texts
-# from src.core.use_cases import bot as use_cases
+from src.bot.keyboards import users as keyboards
+from src.bot.states import users as states
+from src.bot.texts import users as texts
+from src.core.use_cases import bot as use_cases
 
-# logger = logging.getLogger(__name__)
-
-
-# router = Router(name="user_auth_signin")
+logger = logging.getLogger(__name__)
+router = Router()
 
 
 # @router.message(
