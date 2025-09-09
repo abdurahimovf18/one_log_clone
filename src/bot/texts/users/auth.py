@@ -20,7 +20,7 @@ def request_for_language_select() -> str:
 def language_setup_complete(language: str) -> str:
     return _(
         "Bot language has been changed to: {language}"
-    )
+    ).format(language)
 
 
 def auth_request() -> str:

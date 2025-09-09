@@ -4,13 +4,13 @@ from aiogram import Router
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery
 
+from src.bot import di
 from src.bot.filters import users as filters
 from src.bot.keyboards import users as keyboards
 from src.bot.states import users as states
 from src.bot.texts import users as texts
-from src.core.use_cases import bot as use_cases
 from src.core.domain_schema.settings import UserLanguages
-from src.bot import di
+from src.core.use_cases import bot as use_cases
 
 router = Router()
 

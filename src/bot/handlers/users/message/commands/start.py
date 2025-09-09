@@ -2,13 +2,12 @@ from aiogram import Router
 from aiogram.filters.command import CommandStart
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
-from aiolimiter import AsyncLimiter
 
+from src.bot import di
 from src.bot.filters import users as filters
 from src.bot.keyboards import users as keyboards
 from src.bot.states import users as states
 from src.bot.texts import users as texts
-from src.bot import di
 
 router = Router(name="command_start")
 
@@ -17,7 +16,6 @@ router = Router(name="command_start")
 async def start_language_select(
         msg: Message, 
         state: FSMContext,
-        session: di.db_session
         ) -> None:
     await state.clear()
     await msg.answer(

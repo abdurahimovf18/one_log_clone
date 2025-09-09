@@ -1,14 +1,14 @@
 from typing import Literal, cast
 
 from aiogram.filters import Filter
-from aiogram.types import CallbackQuery, Message, Update
+from aiogram.types import Update
 from dishka.integrations.aiogram import FromDishka, inject
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.core.domain_schema.settings import UserLanguages
-from src.core.queries import tg_users
 from src.bot import di
 from src.bot.utils.misc import get_update_text
+from src.core.domain_schema.settings import UserLanguages
+from src.core.queries import tg_users
 
 
 class HasUserTgAccount(Filter):

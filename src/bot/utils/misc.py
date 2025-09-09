@@ -1,5 +1,4 @@
-from typing import cast
-from aiogram.types import Update, CallbackQuery, InlineQuery, Message
+from aiogram.types import CallbackQuery, InlineQuery, Message, Update
 
 
 def get_update_text(upd: Update, raise_exc: bool = False) -> str | None:

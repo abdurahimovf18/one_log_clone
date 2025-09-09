@@ -1,13 +1,13 @@
 from aiogram import Router
+from aiogram.filters.state import StateFilter
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery
-from aiogram.filters.state import StateFilter
 
+from src.bot import di
 from src.bot.filters import users as filters
 from src.bot.keyboards import users as keyboards
 from src.bot.states import users as states
 from src.bot.texts import users as texts
-from src.bot import di
 
 router = Router()
 

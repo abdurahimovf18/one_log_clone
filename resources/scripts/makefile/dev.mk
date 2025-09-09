@@ -82,6 +82,9 @@ dev-lint:
 dev-lint-fix:
 	$(DEV_EXEC) uv run ruff check . --fix
 
+dev-lint-fix-unsafe:
+	$(DEV_EXEC) uv run ruff check . --fix --unsafe-fixes
+
 # === type checks ===
 dev-type-check:
 	$(DEV_EXEC) uv run pyright
