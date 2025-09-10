@@ -1,3 +1,4 @@
+from .feedbacks import Feedback
 from .messages import Messages
 from .schedules import Schedule
 from .shared import enums
@@ -11,6 +12,7 @@ from .users import User
 
 __all__ = [
     "Base",
+    "Feedback",
     "Messages",
     "Schedule",
     "Texts",
@@ -19,5 +21,5 @@ __all__ = [
     "TgUser",
     "User",
     "UserAuth",
-    "enums",
+    "enums"
 ]

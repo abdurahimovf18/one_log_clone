@@ -17,3 +17,12 @@ def main_menu() -> ReplyKeyboardMarkup:
             ]
         ]
     )
+
+
+def back() -> ReplyKeyboardMarkup:
+    return ReplyKeyboardMarkup(
+        resize_keyboard=True,
+        keyboard=[
+            [KeyboardButton(text=_("⬅️ Back"))]
+        ]
+    )

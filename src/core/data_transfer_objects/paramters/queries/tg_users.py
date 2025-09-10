@@ -27,3 +27,8 @@ class UpdateDTO(BaseDTO):
 class SetUserIdByChatId(BaseDTO):
     chat_id: TgUser.chat_id
     user_id: TgUser.user_id | None = None
+
+
+class GetLanguageByChatId(BaseDTO):
+    chat_id: TgUser.chat_id
+    

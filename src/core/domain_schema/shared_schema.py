@@ -9,17 +9,17 @@ type UUID_ID = Annotated[
     Field()
 ]
 
-type CreatedAt = Annotated[
+type CREATED_AT = Annotated[
     datetime,
     Field()
 ]
 
-type UpdatedAt = Annotated[
+type UPDATED_AT = Annotated[
     datetime,
     Field()
 ]
 
-type ChatID = Annotated[
+type CHAT_ID = Annotated[
     int,
     Field()
 ]

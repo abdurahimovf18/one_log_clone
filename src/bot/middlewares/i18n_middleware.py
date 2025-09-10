@@ -46,14 +46,11 @@ class I18nMiddleware(BaseMiddleware):
             raise ValueError(f"Unsupported event detected on {type(self).__name__}")
 
         async with session_factory() as session:
-            user_language = await tg_users.get_by_chat_id(
-                tg_users.p.GetByChatIdDTO(chat_id=user_id), session=session
+            user = await tg_users.get_language_by_chat_id(
+                tg_users.p.GetLanguageByChatId(chat_id=user_id), session=session
             )
-
-            if user_language is None:
-                return DEFAULT_LANGUAGE.value
             
-            return user_language.language.value
+            return DEFAULT_LANGUAGE.value if user is None else user.language.value
     
     def setup(
         self: BaseMiddleware, router: Router, exclude: set[str] | None = None

@@ -135,6 +135,7 @@ BOT_COMMANDS: list[BotCommand] = [
     BotCommand(command="start", description=__("Start or restart the bot")),
     BotCommand(command="help", description=__("Show available commands and usage")),
     BotCommand(command="language", description=__("Switch your preferred language")),
+    BotCommand(command="feedback", description=__("Leave Feedback")),
 ]
 
 # === Model Settings ===

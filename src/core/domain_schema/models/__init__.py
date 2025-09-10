@@ -1,3 +1,4 @@
+from .feedbacks import Feedback
 from .messages import Message
 from .schedules import Schedule
 from .texts import Text
@@ -8,6 +9,7 @@ from .user_auth import UserAuth
 from .users import User
 
 __all__ = [
+    "Feedback",
     "Message",
     "Schedule",
     "Text",
@@ -15,5 +17,5 @@ __all__ = [
     "TgGroup",
     "TgUser",
     "User",
-    "UserAuth",
+    "UserAuth"
 ]

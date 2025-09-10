@@ -9,7 +9,7 @@ from src.bot.keyboards import users as keyboards
 from src.bot.states import users as states
 from src.bot.texts import users as texts
 
-router = Router(name="command_start")
+router = Router()
 
 
 @router.message(CommandStart(), filters.has_user_tg_account, filters.is_authenticated)

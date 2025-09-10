@@ -17,6 +17,9 @@ dev-restart-service:
 	read -p "<[dev] bash> Enter name of the service (If empty string is entered every service will be restarted): " service; \
 	$(DEV_COMPOSE) restart $$service
 
+dev-restart-bot:
+	$(DEV_COMPOSE) restart bot
+
 dev-build: 
 	$(DEV_COMPOSE) build
 

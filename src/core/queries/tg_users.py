@@ -77,3 +77,22 @@ async def set_user_id_by_chat_id(
         .where(model.chat_id == data.chat_id)
     )
     await session.execute(stmt)
+
+
+async def get_language_by_chat_id(
+        data: p.GetLanguageByChatId,
+        *,
+        session: AsyncSession
+    ) -> r.GetLanguageByChatId | None:
+    query = (
+        sa.select(model)
+        .where(model.chat_id == data.chat_id)
+        .options(
+            sa_orm.load_only(model.language)
+        )
+    )
+    result = await session.execute(query)
+    model_result = result.scalar_one_or_none()
+    if model_result is not None:
+        return r.GetLanguageByChatId.model_validate(model_result)
+    

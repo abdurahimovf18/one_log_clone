@@ -1,7 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.core.data_transfer_objects.paramters.use_cases.bot import auth as p
-from src.core.data_transfer_objects.responses.use_cases.bot import auth as r
+from src.core.data_transfer_objects.paramters.use_cases import bot as p
+from src.core.data_transfer_objects.responses.use_cases import bot as r
 from src.core.exceptions.use_cases import bot as exceptions
 from src.core.queries import tg_users, user_auth
 from src.utils.auth import verify_password

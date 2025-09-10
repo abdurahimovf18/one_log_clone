@@ -2,7 +2,7 @@ from typing import Annotated
 
 from pydantic import Field
 
-from src.core.domain_schema.shared_schema import UUID_ID, CreatedAt, UpdatedAt
+from src.core.domain_schema.shared_schema import CREATED_AT, UPDATED_AT, UUID_ID
 
 
 class UserAuth:
@@ -11,5 +11,5 @@ class UserAuth:
     type username = Annotated[str, Field()]
     type password = Annotated[str, Field()]
     
-    type updated_at = UpdatedAt
-    type created_at = CreatedAt
+    type created_at = CREATED_AT
+    type updated_at = UPDATED_AT
