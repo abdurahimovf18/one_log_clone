@@ -29,4 +29,3 @@ class SetUserIdByChatId(BaseDTO): ...
 
 class GetLanguageByChatId(BaseDTO):
     language: TgUser.language
-    

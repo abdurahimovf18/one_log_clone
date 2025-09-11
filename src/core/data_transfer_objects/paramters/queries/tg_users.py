@@ -32,3 +32,7 @@ class SetUserIdByChatId(BaseDTO):
 class GetLanguageByChatId(BaseDTO):
     chat_id: TgUser.chat_id
     
+
+class UpdateLanguageDTO(BaseDTO):
+    chat_id: TgUser.chat_id
+    language: TgUser.language

@@ -96,3 +96,15 @@ async def get_language_by_chat_id(
     if model_result is not None:
         return r.GetLanguageByChatId.model_validate(model_result)
     
+
+async def update_language(
+        data: p.UpdateLanguageDTO,
+        *,
+        session: AsyncSession
+    ) -> None:
+    stmt = (
+        sa.update(model)
+        .where(model.chat_id == data.chat_id)
+        .values({"language": data.language.value})
+    )
+    await session.execute(stmt)
