@@ -24,6 +24,6 @@ __pycache__/
 .dockerignore
 
 # Project-specific
-/resources/*
+/resources
 !/resources/docker/services
 /alembic

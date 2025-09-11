@@ -10,4 +10,3 @@ class TgGroup:
     type owner_id = UUID_ID
     type created_at = CREATED_AT
     type updated_at = UPDATED_AT
-    
