@@ -5,9 +5,7 @@ from aiolimiter import AsyncLimiter
 from src.bot.handlers.routers import base_router
 from src.bot.infrastructure import bot, dp, redis
 from src.bot.middlewares.throttling_middleware import ThrottlingMiddleware
-from src.bot.providers.database_session_provider import (
-    register_provider as register_database_session_provider,
-)
+from src.bot.providers import register_providers
 from src.bot.utils.bot import setup_bot_commands
 from src.bot.utils.i18n import i18n_middleware
 from src.config.settings import BOT_COMMANDS, BOT_THROTTLING_PER_SECOND, MESSAGE_RATE_PER_SECOND
@@ -33,9 +31,9 @@ async def startup():
     logger.info("i18n middleware registered")
 
     # === Providers === #
-    logger.debug("Registering database session provider")
-    register_database_session_provider(dp)
-    logger.info("Database session provider registered")
+    logger.debug("Registering providers from dishka")
+    register_providers(dp)
+    logger.info("Providers are registered")
 
     # === Dependencies === #
     logger.debug("Registering AsyncLimiter as Dependency")

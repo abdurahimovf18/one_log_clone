@@ -12,7 +12,7 @@ from src.bot.texts import users as texts
 from src.config.settings import DEFAULT_LANGUAGE
 from src.core import queries
 from src.core.domain_schema.settings import UserLanguages
-from src.core.use_cases import bot as use_cases
+from src.core.use_cases import users as use_cases  # TODO: use_case is not relalized
 
 router = Router()
 

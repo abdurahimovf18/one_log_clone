@@ -1,5 +1,5 @@
-from . import bot
+from . import users
 
 __all__ = [
-    "bot"
+    "users"
 ]

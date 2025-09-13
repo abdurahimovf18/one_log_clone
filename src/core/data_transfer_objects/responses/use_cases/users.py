@@ -1,5 +1,7 @@
 from src.core.data_transfer_objects.base import BaseDTO
-from src.core.domain_schema.models import Feedback, TgUser, UserAuth
+from src.core.domain_schema.models import (
+    Feedback, TgUser, UserAuth, Message
+)
 
 
 class RegisterTgUserDTO(BaseDTO):
@@ -25,3 +27,11 @@ class SignUpDTO(BaseDTO):
 class AcceptFeedbackDTO(BaseDTO):
     id: Feedback.id
     status: Feedback.status
+
+
+class GetCurrentMessageDTO(BaseDTO):
+    id: Message.id
+    text_id: Message.text_id | None = None
+    owner_id: Message.owner_id
+    interval: Message.interval
+    duration: Message.duration

@@ -10,3 +10,9 @@ class FeedbackStatus(Enum):
     IN_REVIEW = "IN_REVIEW"
     ANSWERED = "ANSWERED"
     CLOSED = "CLOSED"
+
+
+class MessageStatus(Enum):
+    CREATED = "CREATED"
+    STARTED = "STARTED"
+    FINISHED = "FINISHED"

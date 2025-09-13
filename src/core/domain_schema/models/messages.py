@@ -4,6 +4,7 @@ from typing import Annotated
 from pydantic import Field
 
 from src.core.domain_schema.shared_schema import UUID_ID
+from src.models.shared.enums import MessageStatus
 
 
 class Message:
@@ -12,4 +13,5 @@ class Message:
     type owner_id = UUID_ID
     type interval = Annotated[timedelta, Field()]
     type duration = Annotated[timedelta, Field()]
-    type started_at = Annotated[datetime | None, Field()]
+    type started_at = Annotated[datetime, Field()]
+    type status = Annotated[MessageStatus, Field()]

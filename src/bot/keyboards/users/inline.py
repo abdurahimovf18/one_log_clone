@@ -3,6 +3,7 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from src.bot.utils.i18n import gettext as _
 from src.config.settings import LANGUAGES
 from src.core.domain_schema.settings import UserLanguage
+from src.bot.keyboards.shared import back_button
 
 
 def language_select(languages: tuple[UserLanguage, ...] = LANGUAGES) -> InlineKeyboardMarkup:    
@@ -106,5 +107,6 @@ def message_menu(
             [InlineKeyboardButton(
                 text=status_text["start"][allow_start], callback_data="start"    
             )],
+            [back_button()]
         ]
     )
