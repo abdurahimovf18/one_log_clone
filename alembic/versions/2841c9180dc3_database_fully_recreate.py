@@ -29,7 +29,7 @@ def upgrade() -> None:
     )
     op.create_table('messages',
     sa.Column('id', sa.UUID(), nullable=False),
-    sa.Column('text_id', sa.UUID(), nullable=False),
+    sa.Column('text_id', sa.UUID(), nullable=True),
     sa.Column('interval', sa.Interval(), nullable=False),
     sa.Column('duration', sa.Interval(), nullable=False),
     sa.Column('started_at', sa.DateTime(), nullable=True),
