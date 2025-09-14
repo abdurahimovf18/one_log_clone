@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.core.data_transfer_objects.paramters.use_cases import users as p
 from src.core.data_transfer_objects.responses.use_cases import users as r
 from src.core.exceptions.use_cases import users as exceptions
-from src.core.queries import feedbacks, messages, tg_users, user_auth, users, texts
+from src.core.queries import feedbacks, messages, texts, tg_users, user_auth, users
 from src.utils.auth import hash_password, verify_password
 
 

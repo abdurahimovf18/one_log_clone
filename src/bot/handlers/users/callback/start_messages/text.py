@@ -9,7 +9,6 @@ from src.bot.texts import users as texts
 from src.core import queries
 from src.core.use_cases import users as use_cases
 
-
 router = Router()
 
 

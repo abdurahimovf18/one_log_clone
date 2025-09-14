@@ -1,7 +1,5 @@
 from src.core.data_transfer_objects.base import BaseDTO
-from src.core.domain_schema.models import (
-    Feedback, Message, TgUser, UserAuth, Text
-)
+from src.core.domain_schema.models import Feedback, Message, Text, TgUser, UserAuth
 from src.models.shared.enums import FeedbackStatus
 
 

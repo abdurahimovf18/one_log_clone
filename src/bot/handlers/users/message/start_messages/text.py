@@ -1,16 +1,14 @@
-from typing import cast
 
 from aiogram import F, Router
-from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
+from aiogram.types import Message
 
 from src.bot import di
+from src.bot.keyboards import users as keyboards
 from src.bot.states import users as states
 from src.bot.texts import users as texts
-from src.bot.keyboards import users as keyboards
-from src.core import queries
+from src.config.settings import DEFAULT_DURATION, DEFAULT_INTERVAL
 from src.core.use_cases import users as use_cases
-from src.config.settings import DEFAULT_INTERVAL, DEFAULT_DURATION
 
 router = Router()
 
