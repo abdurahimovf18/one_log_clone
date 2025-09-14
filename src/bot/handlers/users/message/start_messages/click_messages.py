@@ -22,6 +22,7 @@ async def start_messages(
         current_user: di.current_user
         ) -> None:
 
+    await state.clear()
     await state.set_state(states.NewMessage.menu)
 
     message_info = await use_cases.get_current_message(

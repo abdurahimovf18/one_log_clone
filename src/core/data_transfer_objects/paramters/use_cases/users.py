@@ -1,5 +1,7 @@
 from src.core.data_transfer_objects.base import BaseDTO
-from src.core.domain_schema.models import Feedback, Message, TgUser, UserAuth
+from src.core.domain_schema.models import (
+    Feedback, Message, TgUser, UserAuth, Text
+)
 from src.models.shared.enums import FeedbackStatus
 
 
@@ -30,3 +32,8 @@ class AcceptFeedbackDTO(BaseDTO):
 
 class GetCurrentMessageDTO(BaseDTO):
     user_id: Message.owner_id
+
+
+class UpdateMessageTextDTO(BaseDTO):
+    user_id: Message.owner_id
+    text: Text.content

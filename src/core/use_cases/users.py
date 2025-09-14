@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.core.data_transfer_objects.paramters.use_cases import users as p
 from src.core.data_transfer_objects.responses.use_cases import users as r
 from src.core.exceptions.use_cases import users as exceptions
-from src.core.queries import feedbacks, messages, tg_users, user_auth, users
+from src.core.queries import feedbacks, messages, tg_users, user_auth, users, texts
 from src.utils.auth import hash_password, verify_password
 
 
@@ -135,3 +135,22 @@ async def signup(data: p.SignUpDTO, *,session: AsyncSession) -> r.SignUpDTO:
         password=new_user.password,
         created_at=new_user.created_at
     )
+
+
+async def update_message_text(data: p.UpdateMessageTextDTO, *, session: AsyncSession) -> None:
+    message_info = await get_current_message(
+        p.GetCurrentMessageDTO(user_id=data.user_id), session=session
+    )
+
+    if message_info.text_id is None:
+        text_info = await texts.create(texts.p.CreateDTO(content=data.text), session=session)
+
+        await messages.update_text_id_by_id(
+            messages.p.UpdateTextIdByIdDTO(id=message_info.id, text_id=text_info.id), 
+            session=session
+        )
+    else:
+        await texts.update_content_by_id(
+            texts.p.UpdateContentByIdDTO(id=message_info.text_id, content=data.text), 
+            session=session
+        )    

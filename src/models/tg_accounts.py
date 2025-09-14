@@ -14,6 +14,8 @@ class TgAccount(Base):
     phone: Mapped[str] = mapped_column(sa_typ.String(25))
     # TODO: status for deleting and unexpected behaviours
 
+    is_active: Mapped[bool] = mapped_column(default=True)
+
     __table_args__ = (
         sa.UniqueConstraint("user_id", "phone", name="user_id_phone_unique_constraint"),
     )

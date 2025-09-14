@@ -48,3 +48,12 @@ def message_content_request(current_text: str | None = None) -> str:
         current_text = f"{current_text[:253]}..."
 
     return f"{action_info}\n\n{old_text_info.format(current_text=current_text)}"
+
+
+def new_message_text_set(current_text: str) -> str:
+    if len(current_text) > 255:
+        current_text = f"{current_text[:253]}..."
+
+    return _("Your message has been updated successfully.\n\nThe new message is:\n{current_text}").format(
+        current_text=current_text
+    )

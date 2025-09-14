@@ -22,3 +22,10 @@ async def get_by_id(data: p.GetByIdDTO, *, session: AsyncSession) -> r.GetByIdDT
     if model_result is not None:
         return r.GetByIdDTO.model_validate(model_result)
     
+
+async def update_content_by_id(data: p.UpdateContentByIdDTO, *, session: AsyncSession) -> None:
+    stmt = sa.update(model).where(model.id == data.id).values({"content": data.content})
+    await session.execute(stmt)
+
+
+    

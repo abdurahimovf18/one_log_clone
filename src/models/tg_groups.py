@@ -15,3 +15,6 @@ class TgGroup(Base):
     )
     created_at: Mapped[CREATED_AT]
     updated_at: Mapped[UPDATED_AT]
+
+    is_active: Mapped[bool] = mapped_column(default=True)
+    

@@ -9,3 +9,8 @@ class CreateDTO(BaseDTO):
 class GetByIdDTO(BaseDTO):
     id: Text.id
     
+
+class UpdateContentByIdDTO(BaseDTO):
+    id: Text.id
+    content: Text.content
+    

@@ -49,3 +49,8 @@ async def get_created_message(
     if model_result is not None:
         return r.GetCreatedMessageDTO.model_validate(model_result)
     
+
+async def update_text_id_by_id(data: p.UpdateTextIdByIdDTO, *, session: AsyncSession) -> None:
+    stmt = sa.update(model).where(model.id == data.id).values({"text_id": data.text_id})
+    await session.execute(stmt)
+    

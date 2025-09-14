@@ -9,3 +9,8 @@ class GetCreatedMessageDTO(BaseDTO):
 class CreateDTO(BaseDTO):
     owner_id: Message.owner_id
     
+
+class UpdateTextIdByIdDTO(BaseDTO):
+    id: Message.id
+    text_id: Message.text_id
+    
