@@ -1,7 +1,6 @@
-from sqlalchemy.ext.asyncio import AsyncSession
-
 import sqlalchemy as sa
 from sqlalchemy import orm as sa_orm
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.core.data_transfer_objects.paramters.queries import messages as p
 from src.core.data_transfer_objects.responses.queries import messages as r

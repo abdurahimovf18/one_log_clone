@@ -1,13 +1,13 @@
 from aiolimiter import AsyncLimiter
 from dishka.integrations.aiogram import FromDishka
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.bot.providers.current_user_provider import CurrentUserDTO
 
+from src.bot.providers.current_user_provider import CurrentUserDTO
 
 __all__ = [
     "SendRateLimiter",
-    "db_session",
-    "current_user"
+    "current_user",
+    "db_session"
 ]
 
 db_session = FromDishka[AsyncSession]

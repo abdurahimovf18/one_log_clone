@@ -1,27 +1,37 @@
 from aiogram import F, Router
+from aiogram.filters.state import StateFilter
 from aiogram.fsm.context import FSMContext
-from aiogram.types import Message
+from aiogram.types import CallbackQuery
 
 from src.bot import di
 from src.bot.keyboards import users as keyboards
 from src.bot.states import users as states
 from src.bot.texts import users as texts
-from src.bot.utils.i18n import gettext_lazy as __
 from src.config.settings import DEFAULT_DURATION, DEFAULT_INTERVAL
 from src.core.use_cases import users as use_cases
 
 router = Router()
 
 
-@router.message(F.text == __("♻️ Send Message"))
-async def start_messages(
-        msg: Message,
+@router.callback_query(
+    F.data == "back", 
+    StateFilter(
+        states.NewMessageAccount.menu,
+        states.NewMessageDuration.menu,
+        states.NewMessageInterval.menu,
+        states.NewMessageGroup.menu,
+        states.NewMessageText.menu,
+        states.NewMessageStart.menu,
+    ))
+async def back(
+        call: CallbackQuery,
         state: FSMContext,
-        send_rate_limiter: di.SendRateLimiter,
         session: di.db_session,
-        current_user: di.current_user
+        current_user: di.current_user,
+        send_rate_limiter: di.SendRateLimiter
         ) -> None:
-
+    
+    await state.clear()
     await state.set_state(states.NewMessage.menu)
 
     message_info = await use_cases.get_current_message(
@@ -33,7 +43,7 @@ async def start_messages(
     await session.commit()
 
     async with send_rate_limiter:
-        await msg.answer(
+        await call.message.edit_text(  # type: ignore
             texts.send_message.message_info(),
             reply_markup=keyboards.inline.message_menu(
                 allow_start=False,

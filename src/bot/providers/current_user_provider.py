@@ -1,17 +1,14 @@
 from typing import cast
 
-from sqlalchemy.ext.asyncio import AsyncSession
-from src.core.data_transfer_objects.base import BaseDTO
-from src.core.domain_schema.models import TgUser
-
 from aiogram.types import TelegramObject
 from dishka import Scope, provide
-from dishka.integrations.aiogram import AiogramMiddlewareData, AiogramProvider
+from dishka.integrations.aiogram import AiogramProvider
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.core import queries
 from src.bot.utils.misc import get_update_user_id
-
-from src.infrastructure.database import session_factory
+from src.core import queries
+from src.core.data_transfer_objects.base import BaseDTO
+from src.core.domain_schema.models import TgUser
 
 
 class CurrentUserDTO(BaseDTO):

@@ -1,9 +1,9 @@
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
+from src.bot.keyboards.shared import back_button
 from src.bot.utils.i18n import gettext as _
 from src.config.settings import LANGUAGES
 from src.core.domain_schema.settings import UserLanguage
-from src.bot.keyboards.shared import back_button
 
 
 def language_select(languages: tuple[UserLanguage, ...] = LANGUAGES) -> InlineKeyboardMarkup:    
@@ -110,3 +110,47 @@ def message_menu(
             [back_button()]
         ]
     )
+
+
+def pagination(page: int, pages_count: int, items: dict[str, str]) -> InlineKeyboardMarkup:
+    keyboard: list[list[InlineKeyboardButton]] = []
+    
+    prev_text = "◀️" if page > 1 else "🚫"
+    next_text = "▶️" if page < pages_count else "🚫"
+    page_text = f"{page}/{pages_count}"
+
+    keyboard.append(
+        [InlineKeyboardButton(text=key, callback_data=value) for key, value in items.items()]
+    )
+
+    if page > 1 or page < pages_count:
+        keyboard.append([
+            InlineKeyboardButton(text=prev_text, callback_data=f"{page - 1}"),
+            InlineKeyboardButton(text=page_text, callback_data="current_page"),
+            InlineKeyboardButton(text=next_text, callback_data=f"{page + 1}")
+        ])
+
+    keyboard.append([back_button()])
+
+    return InlineKeyboardMarkup(
+        inline_keyboard=[*keyboard]
+    )
+
+
+def info_not_found(show_add_btn: bool = False) -> InlineKeyboardMarkup:
+    keyboard: list[list[InlineKeyboardButton]] = []
+
+    if show_add_btn:
+        keyboard.append([InlineKeyboardButton(text=_("Add One ↗️"), callback_data="add")])
+
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            *keyboard,
+            [back_button()]
+        ]
+    )
+
+
+def back() -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(inline_keyboard=[[back_button()]])
+

@@ -21,3 +21,30 @@ Steps to do that:
 5️⃣ Start the message.
 """
     )
+
+
+def accounts_info() -> str:
+    return _(
+        "Here are your accounts included to your account, " 
+        "You can send messages behalf of those telegram accounts by " 
+        "setting their status active."
+    )
+
+
+def accounts_not_found() -> str:
+    return _(
+        "You have not registered any accounts yet. " 
+        "Please register and set their status to active, " 
+        "before sending your messages."
+    )
+
+
+def message_content_request(current_text: str | None = None) -> str:
+    action_info = _("Please enter the message you want to send on behalf of your account.")
+    old_text_info = _("The current message is:\n{current_text}")
+
+    current_text = current_text or "-"
+    if len(current_text) > 255:
+        current_text = f"{current_text[:253]}..."
+
+    return f"{action_info}\n\n{old_text_info.format(current_text=current_text)}"

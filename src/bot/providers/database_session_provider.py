@@ -1,6 +1,8 @@
 from collections.abc import AsyncGenerator
+
 from dishka import Provider, Scope, provide
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from src.infrastructure.database import session_factory
 
 

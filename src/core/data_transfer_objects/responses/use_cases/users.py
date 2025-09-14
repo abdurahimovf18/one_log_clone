@@ -1,7 +1,5 @@
 from src.core.data_transfer_objects.base import BaseDTO
-from src.core.domain_schema.models import (
-    Feedback, TgUser, UserAuth, Message
-)
+from src.core.domain_schema.models import Feedback, Message, TgUser, UserAuth
 
 
 class RegisterTgUserDTO(BaseDTO):

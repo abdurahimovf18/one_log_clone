@@ -3,5 +3,5 @@ from src.core.domain_schema.models import TgAccount
 
 
 class GetPageByUserIdDTO(BaseDTO):
-    session_id: TgAccount.session_id
-    phone: TgAccount.phone
+    user_id: TgAccount.user_id
+    page: int

@@ -1,26 +1,20 @@
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import exc as sa_exc
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.core.data_transfer_objects.paramters.use_cases import users as p
 from src.core.data_transfer_objects.responses.use_cases import users as r
-
-from src.core.queries import (
-    tg_users, feedbacks, user_auth, users, messages
-)
 from src.core.exceptions.use_cases import users as exceptions
-from src.utils.auth import verify_password, hash_password
+from src.core.queries import feedbacks, messages, tg_users, user_auth, users
+from src.utils.auth import hash_password, verify_password
 
 
 # TODO: implement caching for this function.
 async def get_current_message(
-        data: p.GetCurrentMessageDTO, 
-        *, 
-        session: AsyncSession,
+        data: p.GetCurrentMessageDTO, *, session: AsyncSession,
         ) -> r.GetCurrentMessageDTO:
     
     last_created_message_info = await messages.get_created_message(
-        messages.p.GetCreatedMessageDTO(owner_id=data.user_id),
-        session=session
+        messages.p.GetCreatedMessageDTO(owner_id=data.user_id), session=session
     )
 
     if last_created_message_info is not None:
@@ -32,19 +26,21 @@ async def get_current_message(
             duration=last_created_message_info.duration
         )
     
-    new_user_info = await messages.create(
+    new_message_info = await messages.create(
         messages.p.CreateDTO(owner_id=data.user_id), session=session
     )
     return r.GetCurrentMessageDTO(
-        id=new_user_info.id,
-        text_id=new_user_info.text_id,
-        owner_id=new_user_info.owner_id,
-        interval=new_user_info.interval,
-        duration=new_user_info.duration
+        id=new_message_info.id,
+        text_id=new_message_info.text_id,
+        owner_id=new_message_info.owner_id,
+        interval=new_message_info.interval,
+        duration=new_message_info.duration
     )
 
 
-async def accept_feedback(data: p.AcceptFeedbackDTO, *, session: AsyncSession) -> r.AcceptFeedbackDTO:
+async def accept_feedback(
+        data: p.AcceptFeedbackDTO, *, session: AsyncSession
+    ) -> r.AcceptFeedbackDTO:
     
     feedback_info = await feedbacks.create(
         feedbacks.p.CreateDTO(
@@ -63,7 +59,9 @@ async def accept_feedback(data: p.AcceptFeedbackDTO, *, session: AsyncSession) -
     )
 
 
-async def register_tg_user(data: p.RegisterTgUserDTO, *, session: AsyncSession) -> r.RegisterTgUserDTO:
+async def register_tg_user(
+        data: p.RegisterTgUserDTO, *, session: AsyncSession
+    ) -> r.RegisterTgUserDTO:
     tg_user = await tg_users.create(
         tg_users.p.CreateDTO(
             chat_id=data.chat_id,

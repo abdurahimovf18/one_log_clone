@@ -27,6 +27,30 @@ class Language(StatesGroup):
     select = State()
 
 
-class SendMessage(StatesGroup):
+class NewMessage(StatesGroup):
+    menu = State()
+    
+
+class NewMessageAccount(StatesGroup):
+    menu = State()
+
+
+class NewMessageGroup(StatesGroup):
+    menu = State()
+
+
+class NewMessageInterval(StatesGroup):
+    menu = State()
+
+
+class NewMessageDuration(StatesGroup):
+    menu = State()
+
+
+class NewMessageText(StatesGroup):
+    menu = State()
+
+
+class NewMessageStart(StatesGroup):
     menu = State()
     

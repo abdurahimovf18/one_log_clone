@@ -1,3 +1,4 @@
+import uuid
 from typing import Literal, cast
 
 from aiogram.filters import Filter
@@ -68,6 +69,22 @@ class IsAuthMethod(Filter):
         return text in self.lookup_methods[self.method]
     
 
+class IsUUIDCallback(Filter):
+
+    async def __call__(self, update: Update) -> bool:
+        if not update.callback_query:
+            return False
+        
+        text = cast(str, get_update_text(update, raise_exc=False))
+
+        try:  # if uuid.UUID can not return uuid result, then it is not uuid string
+            uuid.UUID(text)
+            return True
+        except Exception:
+            return False
+
+
+is_uuid_callback = IsUUIDCallback()
 is_any_auth_method = IsAuthMethod(method="all")
 is_language_message = IsLanguageMessage()
 is_authenticated = IsAuthenticated()

@@ -1,10 +1,9 @@
 from aiogram import Dispatcher
+from dishka import Provider, make_async_container
 from dishka.integrations.aiogram import setup_dishka
-from dishka import make_async_container, Provider
 
 from .current_user_provider import CurrentUserProvider
 from .database_session_provider import DatabaseSessionProvider
-
 
 providers: list[Provider] = [  # type: ignore
     CurrentUserProvider(),

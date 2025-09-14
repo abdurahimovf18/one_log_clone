@@ -80,3 +80,10 @@ def signup_success() -> str:
         "✅ Your account have been created successfully, now you can "
         "<b>SignIn</b> to your account and start working with it..."
     )
+
+
+def user_not_authenticated() -> str:
+    return _(
+        "Authentication required. Please <b>Sign in</b> to your account " 
+        "to proceed. Click <b>/start</b> to <b>SignIn</b> to your account."
+    )
