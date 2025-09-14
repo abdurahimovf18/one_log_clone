@@ -1,5 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
+import sqlalchemy as sa
 from src.core.data_transfer_objects.common import PageDTO
 from src.core.data_transfer_objects.paramters.queries import tg_accounts as p
 from src.core.data_transfer_objects.responses.queries import tg_accounts as r
@@ -30,4 +31,16 @@ async def get_page_by_user_id(
         items_count=len(dict_items),
         pages_count=await page.get_pages_count()
     )
-    
+
+
+async def exists_active_by_user_id(
+        data: p.ExistsActiveByUserIdDTO, *, session: AsyncSession
+    ) -> bool:
+    query = (
+        sa.select(
+            sa.exists(model)
+            .where(model.user_id == data.user_id, model.is_active == True)
+        )
+    )
+    result = await session.execute(query)
+    return result.scalar_one()

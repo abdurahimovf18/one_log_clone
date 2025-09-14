@@ -149,6 +149,7 @@ async def update_message_text(data: p.UpdateMessageTextDTO, *, session: AsyncSes
             messages.p.UpdateTextIdByIdDTO(id=message_info.id, text_id=text_info.id), 
             session=session
         )
+
     else:
         await texts.update_content_by_id(
             texts.p.UpdateContentByIdDTO(id=message_info.text_id, content=data.text), 

@@ -20,15 +20,15 @@ msgstr ""
 
 #: src/bot/keyboards/shared.py:7 src/bot/texts/users/shared.py:5
 msgid "⬅️ Back"
-msgstr ""
+msgstr "⬅️ Orqaga"
 
 #: src/bot/keyboards/users/inline.py:26
 msgid "SignIn"
-msgstr ""
+msgstr "Kirish"
 
 #: src/bot/keyboards/users/inline.py:27
 msgid "SignUp"
-msgstr ""
+msgstr "Ro'yxatdan o'tish"
 
 #: src/bot/keyboards/users/inline.py:38
 msgid "I have an account: SignIn"
@@ -75,7 +75,8 @@ msgstr ""
 msgid ""
 "Please choose <b>Sign In</b> if you already have an account, or <b>Sign "
 "Up</b> to create one."
-msgstr ""
+msgstr "Iltimos, hisob raqamingiz mavjud bo‘lsa <b>Kirish</b>ni tanlang, "
+"yoki yangi hisob yaratish uchun <b>Ro‘yxatdan o‘tish</b> ni tanlang."
 
 #: src/bot/texts/users/auth.py:35
 msgid ""

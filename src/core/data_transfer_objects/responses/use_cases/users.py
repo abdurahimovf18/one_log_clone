@@ -33,3 +33,8 @@ class GetCurrentMessageDTO(BaseDTO):
     owner_id: Message.owner_id
     interval: Message.interval
     duration: Message.duration
+
+
+class UpdateMessageTextDTO(BaseDTO):
+    text: Message.text_id
+    

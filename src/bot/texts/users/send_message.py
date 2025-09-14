@@ -25,17 +25,33 @@ Steps to do that:
 
 def accounts_info() -> str:
     return _(
-        "Here are your accounts included to your account, " 
-        "You can send messages behalf of those telegram accounts by " 
-        "setting their status active."
+        "Here are the accounts linked to your profile. " 
+        "You can send messages on behalf of these Telegram " 
+        "accounts by setting their status to active."
     )
 
 
 def accounts_not_found() -> str:
     return _(
-        "You have not registered any accounts yet. " 
-        "Please register and set their status to active, " 
-        "before sending your messages."
+        "You haven’t registered any accounts yet. Please "
+        "add an account in the settings. Once added, "
+        "you can activate or deactivate it at any time."
+    )
+
+
+def groups_info() -> str:
+    return _(
+        "Here are the groups linked to your profile. " 
+        "You can send messages on behalf of these Telegram " 
+        "groups by setting their status to active."
+    )
+
+
+def groups_not_found() -> str:
+    return _(
+        "You haven’t added any groups yet. Please "
+        "add a group in the settings. Once added, "
+        "you can activate or deactivate it at any time."
     )
 
 
@@ -50,12 +66,5 @@ def message_content_request(current_text: str | None = None) -> str:
     return f"{action_info}\n\n{old_text_info.format(current_text=current_text)}"
 
 
-def new_message_text_set(current_text: str) -> str:
-    if len(current_text) > 255:
-        current_text = f"{current_text[:253]}..."
-
-    return _(
-        "Your message has been updated successfully.\n\nThe new message is:\n{current_text}"
-    ).format(
-        current_text=current_text
-    )
+def message_updated() -> str:
+    return _("✅ Your message has been updated successfully.")
