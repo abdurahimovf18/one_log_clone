@@ -3,7 +3,7 @@ from typing import Annotated
 
 from pydantic import Field
 
-from src.core.domain_schema.shared_schema import UUID_ID
+from src.core.domain_schema.shared_schema import CREATED_AT, UUID_ID
 from src.models.shared.enums import MessageStatus
 
 
@@ -15,3 +15,4 @@ class Message:
     type duration = Annotated[timedelta, Field()]
     type started_at = Annotated[datetime, Field()]
     type status = Annotated[MessageStatus, Field()]
+    type created_at = CREATED_AT

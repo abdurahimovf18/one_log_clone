@@ -5,38 +5,30 @@ from src.core.data_transfer_objects.paramters.use_cases import users as p
 from src.core.data_transfer_objects.responses.use_cases import users as r
 from src.core.exceptions.use_cases import users as exceptions
 from src.core.queries import feedbacks, messages, texts, tg_users, user_auth, users
+from src.models.shared.enums import MessageStatus
 from src.utils.auth import hash_password, verify_password
 
 
 # TODO: implement caching for this function.
-async def get_current_message(
-        data: p.GetCurrentMessageDTO, *, session: AsyncSession,
-        ) -> r.GetCurrentMessageDTO:
-    
-    last_created_message_info = await messages.get_created_message(
-        messages.p.GetCreatedMessageDTO(owner_id=data.user_id), session=session
+async def get_created_message(
+        data: p.GetCreatedMessageDTO, *, session: AsyncSession,
+    ) -> r.GetCreatedMessageDTO:
+
+    # try to get last message
+    last_message_info = await messages.get_last_by_owner_id(
+        messages.p.GetLastByOwnerIdDTO(owner_id=data.owner_id), session=session
     )
 
-    if last_created_message_info is not None:
-        return r.GetCurrentMessageDTO(
-            id=last_created_message_info.id,
-            text_id=last_created_message_info.text_id,
-            owner_id=last_created_message_info.owner_id,
-            interval=last_created_message_info.interval,
-            duration=last_created_message_info.duration
+    # if last message does not exist or it's status is not "CREATED", then try to create 
+    # a new message and return new message's data
+    if last_message_info is None or last_message_info.status != MessageStatus.CREATED:
+        new_message_info = await messages.create(
+            messages.p.CreateDTO(owner_id=data.owner_id), session=session
         )
-    
-    new_message_info = await messages.create(
-        messages.p.CreateDTO(owner_id=data.user_id), session=session
-    )
-    return r.GetCurrentMessageDTO(
-        id=new_message_info.id,
-        text_id=new_message_info.text_id,
-        owner_id=new_message_info.owner_id,
-        interval=new_message_info.interval,
-        duration=new_message_info.duration
-    )
-
+        return r.GetCreatedMessageDTO.model_validate(new_message_info)
+    else: # if last message is ok, then return old message's data
+        return r.GetCreatedMessageDTO.model_validate(last_message_info)    
+        
 
 async def accept_feedback(
         data: p.AcceptFeedbackDTO, *, session: AsyncSession
@@ -138,8 +130,8 @@ async def signup(data: p.SignUpDTO, *,session: AsyncSession) -> r.SignUpDTO:
 
 
 async def update_message_text(data: p.UpdateMessageTextDTO, *, session: AsyncSession) -> None:
-    message_info = await get_current_message(
-        p.GetCurrentMessageDTO(user_id=data.user_id), session=session
+    message_info = await get_created_message(
+        p.GetCreatedMessageDTO(owner_id=data.user_id), session=session
     )
 
     if message_info.text_id is None:

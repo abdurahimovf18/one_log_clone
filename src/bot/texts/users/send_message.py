@@ -68,3 +68,36 @@ def message_content_request(current_text: str | None = None) -> str:
 
 def message_updated() -> str:
     return _("✅ Your message has been updated successfully.")
+
+
+def interval_info() -> str:
+    return _(
+        "⏱️  Please choose an interval from the list below. By setting "
+        "an interval, you control how often messages are "
+        "sent on behalf of your accounts."
+    )
+
+
+def old_interval_chosen(interval: str) -> str:
+    return _(
+        "No change made. Your current interval is: <b>{interval}</b>"
+    ).format(interval=interval)
+
+
+def duration_info() -> str:
+    return _(
+        "⏱️  Please choose a duration from the list below. This " 
+        "controls how long your accounts will keep sending messages."
+    )
+
+
+def old_duration_chosen(duration: str) -> str:
+    return _(
+        "No change made. Your current duration is: <b>{duration}</b>"
+    ).format(duration=duration)
+
+
+def closing() -> str:
+    return _(
+        "⚙️ Closing message settings. The parameters you set will remain the same when you return."
+    )

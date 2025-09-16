@@ -1,4 +1,9 @@
+from collections.abc import Iterable
+from datetime import timedelta
+
 from aiogram.types import CallbackQuery, InlineQuery, Message, Update
+
+from src.core.domain_schema.settings import TimeDelta
 
 
 def get_update_text(upd: Update, raise_exc: bool = False) -> str | None:
@@ -32,3 +37,8 @@ def get_update_user_id(upd: Update, raise_exc: bool = False) -> int | None:
             raise ValueError(f"Update type not suppored, update={upd}")
     
 
+def get_timedelta(timedelta: timedelta, lookup_values: Iterable[TimeDelta]) -> TimeDelta | None:
+
+    for interval in lookup_values:
+        if interval.value == timedelta:
+            return interval

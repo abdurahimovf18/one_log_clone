@@ -1,4 +1,4 @@
-from . import auth, common, exceptions, feedbacks, language, send_message
+from . import auth, common, exceptions, feedbacks, language, send_message, settings
 
 __all__ = [
     "auth",
@@ -6,5 +6,6 @@ __all__ = [
     "exceptions",
     "feedbacks",
     "language",
-    "send_message"
+    "send_message",
+    "settings",
 ]

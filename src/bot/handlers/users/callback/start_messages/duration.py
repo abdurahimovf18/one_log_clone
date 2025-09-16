@@ -11,15 +11,15 @@ from src.bot.states import users as states
 from src.bot.texts import users as texts
 from src.bot.utils.i18n import gettext as _
 from src.bot.utils.misc import get_timedelta
-from src.config.settings import DEFAULT_INTERVAL, INTERVALS
+from src.config.settings import DEFAULT_DURATION, DURATIONS
 from src.core import queries
 from src.core.domain_schema.settings import TimeDelta
 
 router = Router()
 
 
-@router.callback_query(F.data == "interval", states.NewMessage.menu)
-async def show_awaible_intervals(
+@router.callback_query(F.data == "duration", states.NewMessage.menu)
+async def show_awaible_durations(
         call: CallbackQuery,
         state: FSMContext,
         send_rate_limiter: di.SendRateLimiter,
@@ -31,7 +31,7 @@ async def show_awaible_intervals(
             await call.answer(texts.auth.user_not_authenticated(), show_alert=True)
         return
     
-    await state.set_state(states.NewMessageInterval.menu)
+    await state.set_state(states.NewMessageDuration.menu)
 
     data = await state.get_data()
     message_info: state_types.MessageData | None = data.get("current_message")
@@ -41,16 +41,16 @@ async def show_awaible_intervals(
             await call.message.edit_text(texts.exceptions.unexpected_error())  # type: ignore
         return
 
-    message_interval = message_info["interval"]
-    current_timedelta: TimeDelta = get_timedelta(message_interval, INTERVALS) or DEFAULT_INTERVAL
+    message_duration = message_info["duration"]
+    current_timedelta: TimeDelta = get_timedelta(message_duration, DURATIONS) or DEFAULT_DURATION
 
     keyboard_choices: dict[str, str] = {}
-    for interval in INTERVALS:
-        keyboard_choices[_(str(interval.label))] = interval.callback_value
+    for duration in DURATIONS:
+        keyboard_choices[_(str(duration.label))] = duration.callback_value
 
     async with send_rate_limiter:
         await call.message.edit_text(  # type: ignore
-            texts.send_message.interval_info(),
+            texts.send_message.duration_info(),
             reply_markup=keyboards.inline.time_choice(
                 keyboard_choices, current_timedelta.callback_value
             )
@@ -58,10 +58,10 @@ async def show_awaible_intervals(
 
 
 @router.callback_query(
-    states.NewMessageInterval.menu, 
-    filters.Contains({time_value.callback_value for time_value in INTERVALS})
+    states.NewMessageDuration.menu, 
+    filters.Contains({time_value.callback_value for time_value in DURATIONS})
 )
-async def set_new_interval(
+async def set_new_duration(
         call: CallbackQuery,
         state: FSMContext,
         send_rate_limiter: di.SendRateLimiter,
@@ -82,33 +82,33 @@ async def set_new_interval(
             await call.message.edit_text(texts.exceptions.unexpected_error())  # type: ignore
         return
 
-    message_interval = message_info["interval"]
-    old_timedelta: TimeDelta = get_timedelta(message_interval, INTERVALS) or DEFAULT_INTERVAL
-    new_timedelta: TimeDelta = DEFAULT_INTERVAL
+    message_duration = message_info["duration"]
+    old_timedelta: TimeDelta = get_timedelta(message_duration, DURATIONS) or DEFAULT_DURATION
+    new_timedelta: TimeDelta = DEFAULT_DURATION
 
-    for interval in INTERVALS:
-        if interval.callback_value == call.data: 
-            new_timedelta = interval
+    for duration in DURATIONS:
+        if duration.callback_value == call.data: 
+            new_timedelta = duration
             break
 
     if new_timedelta == old_timedelta:
         return
     
-    await queries.messages.update_interval_by_id(
-        queries.messages.p.UpdateIntervalByIdDTO(
-            id=message_info["id"], interval=new_timedelta.value
+    await queries.messages.update_duration_by_id(
+        queries.messages.p.UpdateDurationByIdDTO(
+            id=message_info["id"], duration=new_timedelta.value
         ), session=session
     )
 
     await session.commit()
 
     keyboard_choices: dict[str, str] = {}
-    for interval in INTERVALS:
-        keyboard_choices[_(str(interval.label))] = interval.callback_value
+    for duration in DURATIONS:
+        keyboard_choices[_(str(duration.label))] = duration.callback_value
 
     async with send_rate_limiter:
         await call.message.edit_text(  # type: ignore
-            texts.send_message.interval_info(),
+            texts.send_message.duration_info(),
             reply_markup=keyboards.inline.time_choice(
                 keyboard_choices, new_timedelta.callback_value
             )

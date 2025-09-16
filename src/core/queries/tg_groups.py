@@ -1,10 +1,10 @@
+import sqlalchemy as sa
 from sqlalchemy.ext.asyncio import AsyncSession
 
-import sqlalchemy as sa
+from src.core.data_transfer_objects.common import PageDTO
 from src.core.data_transfer_objects.paramters.queries import tg_groups as p
 from src.core.data_transfer_objects.responses.queries import tg_groups as r
 from src.models import TgGroup
-from src.core.data_transfer_objects.common import PageDTO
 from src.utils.pagination import Pagination
 
 model = TgGroup
@@ -17,7 +17,7 @@ async def exists_active_by_user_id(
     query = (
         sa.select(
             sa.exists(model)
-            .where(model.owner_id == data.owner_id, model.is_active == True)
+            .where(model.owner_id == data.owner_id, model.is_active.is_(True))
         )
     )
     result = await session.execute(query)

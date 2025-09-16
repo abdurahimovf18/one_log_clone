@@ -4,10 +4,10 @@ from aiogram.types import CallbackQuery
 
 from src.bot import di
 from src.bot.keyboards import users as keyboards
+from src.bot.states import types as state_types
 from src.bot.states import users as states
 from src.bot.texts import users as texts
 from src.core import queries
-from src.core.use_cases import users as use_cases
 
 router = Router()
 
@@ -28,12 +28,16 @@ async def set_message(
             await call.answer(texts.auth.user_not_authenticated(), show_alert=True)
         return
 
-    message_info = await use_cases.get_current_message(
-        use_cases.p.GetCurrentMessageDTO(user_id=current_user.id), session=session
-    )
+    data = await state.get_data()
+    message_info: state_types.MessageData | None = data.get("current_message")
+
+    if message_info is None:
+        async with send_rate_limiter:
+            await call.message.edit_text(texts.exceptions.unexpected_error())  # type: ignore
+        return
     
     # check if text_id does not exist
-    if message_info.text_id is None:
+    if message_info["text_id"] is None:
         async with send_rate_limiter:
             await call.message.edit_text(  # type: ignore
                 texts.send_message.message_content_request(None),
@@ -42,7 +46,7 @@ async def set_message(
 
     else:  # do logic if text_id exists
         text_info = await queries.texts.get_by_id(
-            queries.texts.p.GetByIdDTO(id=message_info.text_id), session=session
+            queries.texts.p.GetByIdDTO(id=message_info["text_id"]), session=session
         )
 
         old_text = text_info.content if text_info else None

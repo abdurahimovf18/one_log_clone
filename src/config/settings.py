@@ -153,17 +153,17 @@ INTERVALS: tuple[TimeDelta, ...] = (
     TimeDelta(
         label=__("1 Hour 30 Minutes"),
         value=timedelta(hours=1, minutes=30),
-        callback_value="1h_30m"
+        callback_value="1h30m"
     ),
     TimeDelta(
-        label=__("2 Hours"),
-        value=timedelta(hours=2),
-        callback_value="2h"
+        label=__("3 Hours"),
+        value=timedelta(hours=3),
+        callback_value="3h"
     ),
     TimeDelta(
-        label=__("2 Hours 30 Minutes"),
-        value=timedelta(hours=2, minutes=30),
-        callback_value="2h_30m"
+        label=__("6 Hours"),
+        value=timedelta(hours=6),
+        callback_value="6h"
     ),
 )
 

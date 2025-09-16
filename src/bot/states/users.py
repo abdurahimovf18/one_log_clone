@@ -54,3 +54,7 @@ class NewMessageText(StatesGroup):
 class NewMessageStart(StatesGroup):
     menu = State()
     
+
+class Settings(StatesGroup):
+    menu = State()
+    

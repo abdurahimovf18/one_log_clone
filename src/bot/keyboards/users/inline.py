@@ -77,10 +77,10 @@ def message_menu(
             True: _("✔️ Groups Set"), False: _("Set Groups ↗️"),  
         },
         "interval": {
-            True: _("✔️ Interval Set"), False: _("Set Message ↗️"),
+            True: _("✔️ Interval Set"), False: _("Set Interval ↗️"),
         },
         "duration": {
-            True: _("✔️ Duration Set"), False: _("Set Message ↗️"),
+            True: _("✔️ Duration Set"), False: _("Set Duration ↗️"),
         },
         "start": {
             True: _("✔️ Start Mailing"), False: _("🚫 Start Mailing"),
@@ -154,3 +154,16 @@ def info_not_found(show_add_btn: bool = False) -> InlineKeyboardMarkup:
 def back() -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(inline_keyboard=[[back_button()]])
 
+
+def time_choice(choices: dict[str, str], chosen: str) -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            *[
+                [InlineKeyboardButton(
+                    text=f"✔️ {key}" if value == chosen else key, callback_data=value
+                )]
+                for key, value in choices.items()
+            ],
+            [back_button()]
+        ]
+    )

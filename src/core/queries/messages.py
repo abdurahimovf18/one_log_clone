@@ -18,9 +18,7 @@ async def create(data: p.CreateDTO, *, session: AsyncSession) -> r.CreateDTO:
 
 
 async def get_created_message(
-        data: p.GetCreatedMessageDTO,
-        *,
-        session: AsyncSession
+        data: p.GetCreatedMessageDTO, *, session: AsyncSession
     ) -> r.GetCreatedMessageDTO | None: 
 
     query = (
@@ -50,7 +48,32 @@ async def get_created_message(
         return r.GetCreatedMessageDTO.model_validate(model_result)
     
 
+async def get_last_by_owner_id(
+        data: p.GetLastByOwnerIdDTO, *, session: AsyncSession
+    ) -> r.GetLastByOwnerIdDTO | None:
+
+    query = (
+        sa.select(model)
+        .where(model.owner_id == data.owner_id) 
+        .limit(1)
+        .order_by(sa.desc(model.created_at))
+    )
+    result = await session.execute(query)
+    model_result = result.scalar_one_or_none()
+    if model_result is not None:
+        return r.GetLastByOwnerIdDTO.model_validate(model_result)
+    
+
 async def update_text_id_by_id(data: p.UpdateTextIdByIdDTO, *, session: AsyncSession) -> None:
     stmt = sa.update(model).where(model.id == data.id).values({"text_id": data.text_id})
     await session.execute(stmt)
     
+
+async def update_interval_by_id(data: p.UpdateIntervalByIdDTO, *, session: AsyncSession) -> None:
+    stmt = sa.update(model).where(model.id == data.id).values({"interval": data.interval})
+    await session.execute(stmt)
+    
+
+async def update_duration_by_id(data: p.UpdateDurationByIdDTO, *, session: AsyncSession) -> None:
+    stmt = sa.update(model).where(model.id == data.id).values({"duration": data.duration})
+    await session.execute(stmt)

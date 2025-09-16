@@ -1,4 +1,5 @@
 import uuid
+from collections.abc import Sequence
 from typing import Literal, cast
 
 from aiogram.filters import Filter
@@ -82,6 +83,16 @@ class IsUUIDCallback(Filter):
             return True
         except Exception:
             return False
+
+
+class Contains(Filter):
+    def __init__(self, options: set | Sequence) -> None:
+        self.options = options
+
+    async def __call__(self, update: Update) -> bool:
+        text = cast(str, get_update_text(update, raise_exc=True))
+        return text in self.options
+
 
 
 is_uuid_callback = IsUUIDCallback()

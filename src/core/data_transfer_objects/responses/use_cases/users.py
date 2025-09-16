@@ -27,14 +27,16 @@ class AcceptFeedbackDTO(BaseDTO):
     status: Feedback.status
 
 
-class GetCurrentMessageDTO(BaseDTO):
+class GetCreatedMessageDTO(BaseDTO):
     id: Message.id
     text_id: Message.text_id | None = None
     owner_id: Message.owner_id
     interval: Message.interval
     duration: Message.duration
+    started_at: Message.started_at | None
+    status: Message.status
+    created_at: Message.created_at
 
 
 class UpdateMessageTextDTO(BaseDTO):
     text: Message.text_id
-    

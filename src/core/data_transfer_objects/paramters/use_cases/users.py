@@ -28,8 +28,8 @@ class AcceptFeedbackDTO(BaseDTO):
     message: Feedback.message
 
 
-class GetCurrentMessageDTO(BaseDTO):
-    user_id: Message.owner_id
+class GetCreatedMessageDTO(BaseDTO):
+    owner_id: Message.owner_id
 
 
 class UpdateMessageTextDTO(BaseDTO):

@@ -10,6 +10,17 @@ class GetCreatedMessageDTO(BaseDTO):
     duration: Message.duration
 
 
+class GetLastByOwnerIdDTO(BaseDTO):
+    id: Message.id
+    text_id: Message.text_id | None = None
+    owner_id: Message.owner_id
+    interval: Message.interval
+    duration: Message.duration
+    started_at: Message.started_at | None = None
+    status: Message.status
+    created_at: Message.created_at
+
+
 class CreateDTO(BaseDTO):
     id: Message.id
     text_id: Message.text_id | None = None
@@ -18,3 +29,4 @@ class CreateDTO(BaseDTO):
     duration: Message.duration
     started_at: Message.started_at | None = None
     status: Message.status
+    created_at: Message.created_at

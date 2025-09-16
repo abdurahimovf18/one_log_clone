@@ -1,6 +1,6 @@
+import sqlalchemy as sa
 from sqlalchemy.ext.asyncio import AsyncSession
 
-import sqlalchemy as sa
 from src.core.data_transfer_objects.common import PageDTO
 from src.core.data_transfer_objects.paramters.queries import tg_accounts as p
 from src.core.data_transfer_objects.responses.queries import tg_accounts as r
@@ -39,7 +39,7 @@ async def exists_active_by_user_id(
     query = (
         sa.select(
             sa.exists(model)
-            .where(model.user_id == data.user_id, model.is_active == True)
+            .where(model.user_id == data.user_id, model.is_active.is_(True))
         )
     )
     result = await session.execute(query)
