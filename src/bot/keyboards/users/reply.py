@@ -26,3 +26,16 @@ def back() -> ReplyKeyboardMarkup:
             [KeyboardButton(text=_("⬅️ Back"))]
         ]
     )
+
+
+def settings() -> ReplyKeyboardMarkup:
+    return ReplyKeyboardMarkup(
+        resize_keyboard=True,
+        keyboard=[
+            [
+                KeyboardButton(text=_("💬 Message Settings")),
+                KeyboardButton(text=_("👤 Manage Account"))
+            ],
+            [KeyboardButton(text=_("⬅️ Back"))]
+        ]
+    )

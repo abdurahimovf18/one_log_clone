@@ -57,4 +57,17 @@ class NewMessageStart(StatesGroup):
 
 class Settings(StatesGroup):
     menu = State()
-    
+
+
+class MessageSettings(StatesGroup):
+    menu = State()
+
+
+class MessageAccountSettings(StatesGroup):
+    menu = State()
+
+
+class MessageGroupSettings(StatesGroup):
+    menu = State()
+
+

@@ -114,16 +114,16 @@ def message_menu(
 
 def pagination(page: int, pages_count: int, items: dict[str, str]) -> InlineKeyboardMarkup:
     keyboard: list[list[InlineKeyboardButton]] = []
-    
-    prev_text = "◀️" if page > 1 else "🚫"
-    next_text = "▶️" if page < pages_count else "🚫"
-    page_text = f"{page}/{pages_count}"
 
     keyboard.append(
         [InlineKeyboardButton(text=key, callback_data=value) for key, value in items.items()]
     )
 
     if page > 1 or page < pages_count:
+        prev_text = "◀️" if page > 1 else "🚫"
+        next_text = "▶️" if page < pages_count else "🚫"
+        page_text = f"{page}/{pages_count}"
+
         keyboard.append([
             InlineKeyboardButton(text=prev_text, callback_data=f"{page - 1}"),
             InlineKeyboardButton(text=page_text, callback_data="current_page"),
@@ -163,6 +163,96 @@ def time_choice(choices: dict[str, str], chosen: str) -> InlineKeyboardMarkup:
                     text=f"✔️ {key}" if value == chosen else key, callback_data=value
                 )]
                 for key, value in choices.items()
+            ],
+            [back_button()]
+        ]
+    )
+
+
+def message_settings() -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            [InlineKeyboardButton(text=_("📞 Accounts"), callback_data="accounts")],
+            [InlineKeyboardButton(text=_("👥 Groups"), callback_data="groups")],
+            [back_button()]
+        ]
+    )
+
+
+def settings_pagination(
+        page: int, 
+        pages_count: int, 
+        items: dict[str, str],
+        selected_items: set[str],
+) -> InlineKeyboardMarkup:
+    keyboard: list[list[InlineKeyboardButton]] = []
+    is_page_selected = True
+
+    for label, callback in items.items():
+        if callback in selected_items:
+            label = f"✅ {label}"
+        else:
+            is_page_selected = False
+
+        keyboard.append([InlineKeyboardButton(text=label, callback_data=callback)])  
+        
+    if page > 1 or page < pages_count:
+        prev_text = "◀️" if page > 1 else "🚫"
+        next_text = "▶️" if page < pages_count else "🚫"
+        page_text = f"{page}/{pages_count}"
+
+        keyboard.append([
+            InlineKeyboardButton(text=prev_text, callback_data=f"{page - 1}"),
+            InlineKeyboardButton(text=page_text, callback_data="current_page"),
+            InlineKeyboardButton(text=next_text, callback_data=f"{page + 1}")
+        ])
+
+    select_text = _("✅ Select Page") if is_page_selected else _("✔️ Select Page")
+
+    keyboard.append([
+        InlineKeyboardButton(text=select_text, callback_data="select",),
+        InlineKeyboardButton(text=_("🔽 Action"), callback_data="action")
+    ])
+
+    keyboard.append([
+        InlineKeyboardButton(text=_("➕ Add new"), callback_data="add"),  # noqa: RUF001
+    ])
+
+    keyboard.append([back_button()])
+    return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+
+def settings_actions() -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            [
+                InlineKeyboardButton(text=_("✅ Activate All"), callback_data="activate_items"),
+                InlineKeyboardButton(text=_("✔️ Deactivate All"), callback_data="deactivate_items"),
+                InlineKeyboardButton(text=_("🗑 Delete All"), callback_data="delete_items"),
+            ],
+            [back_button()]
+        ]
+    )
+
+
+def delete_confirm() -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            [
+                InlineKeyboardButton(text=_("❌ Yes, Delete all")),
+            ],
+            [
+                InlineKeyboardButton(text=_("⬅️ No, Go Back")),
+            ]
+        ]
+    )
+
+
+def delete_confirm_final() -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            [
+                InlineKeyboardButton(text=_("❌ Yes, I'm 100% sure.")),
             ],
             [back_button()]
         ]

@@ -13,4 +13,15 @@ class MessageData(TypedDict):
     created_at: datetime
 
 
+class SettingsPageItem(TypedDict):
+    is_selected: bool
+    callback: str
+    label: str
 
+
+class SettingsPage(TypedDict):
+    items: list[SettingsPageItem]
+
+
+class SettingsStateData(TypedDict):
+    page: SettingsPage
