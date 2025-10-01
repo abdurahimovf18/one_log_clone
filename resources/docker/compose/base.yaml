@@ -117,18 +117,18 @@ services:
   # PgBouncer (DB connection pooler)
   # -------------------------
   pgbouncer:
-    image: "bitnami/pgbouncer:1.24.1-debian-12-r10"
+    image: "edoburu/pgbouncer:v1.24.1-p1"
     environment:
-      POSTGRESQL_HOST: database
-      POSTGRESQL_USERNAME: ${DATABASE_USER}
-      POSTGRESQL_PASSWORD: ${DATABASE_PASSWORD}
-      POSTGRESQL_PORT: 5432
-      PGBOUNCER_DATABASE: ${DATABASE_NAME}
-      PGBOUNCER_AUTH_TYPE: "md5"
+      DB_HOST: database
+      DB_PORT: 5432
+      DB_NAME: ${DATABASE_NAME}
+      DB_USER: ${DATABASE_USER}
+      DB_PASSWORD: $(DATABASE_PASSWORD) 
+      LISTEN_PORT: 6432
+      AUTH_TYPE: scram-sha-256
       PGBOUNCER_POOL_MODE: "transaction"
       PGBOUNCER_MAX_CLIENT_CONN: 2000
-      PGBOUNCER_MAX_DB_CONNECTIONS: 50
-      PGBOUNCER_IGNORE_STARTUP_PARAMETERS: "extra_float_digits"
+      PGBOUNCER_DEFAULT_POOL_SIZE: 30
     depends_on:
       - database
     healthcheck:
